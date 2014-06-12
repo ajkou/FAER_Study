@@ -10,9 +10,10 @@ Rater and AssessmentTime appear to be fixed-effect factors.
 Rater is a between-subject varible.
 AssessmentTime a within-subject variable
 
-#First thing to do is to look at means of the Total Score across categories.
+First thing to do is to look at means of the Total Score across categories.
 
 In Total Score
+
     Grand mean
     16.14062
     
@@ -25,6 +26,7 @@ In Total Score
     12.78 14.30 21.34
 
 In Proc score
+
     Grand mean
     10.375
     
@@ -37,6 +39,7 @@ In Proc score
      8.11  9.61 13.41
      
 In Ergo score
+
     Grand mean
     5.765625
     
@@ -49,6 +52,7 @@ In Ergo score
     4.67 4.69 7.94
 
 In Global score
+
     Grand mean
     2.109375
     

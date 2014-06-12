@@ -61,10 +61,22 @@ TotErgo <- data$TotErgo
 Global <- data$Global
 data.manova <- manova(cbind(TotProc, TotErgo, Global)~Rater + AssessmentTime)
 
+
 ## Means for all subgroups
 print(model.tables(data.aov ,"means"),digits=3)
+print(model.tables(data.aovProc ,"means"),digits=3)
+print(model.tables(data.aovErgo ,"means"),digits=3)
+print(model.tables(data.aov5 ,"means"),digits=3)
 tapply(data$Total, factor(data$Rater), mean)
 tapply(data$Total, factor(data$AssessmentTime), mean)
+#Total Score Dist
+par(mfrow = c( 2, 2 ))
+hist(data$Total)
+hist(data$TotProc)
+hist(data$TotErgo)
+hist(data$Global)
+par(mfrow = c( 1, 1 ))
+
 
 ## Correlation Between Raters
 x <- cor(subset(data[,8:22], data$Rater==1), subset(data[,8:22], data$Rater==2))
@@ -82,26 +94,19 @@ x.5Scale <- cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2)
 
 
 ##t-tests pairwise t-tests for paired data; not a big factor 
-pairwise.t.test(data$Total, Rater, paired=T, p.adj="none")
-pairwise.t.test(data$Total, AssessmentTime, paired=T, p.adj="holm")
-pairwise.t.test(data$Total, AssessmentTime, paired=T, p.adj="bonferroni")
+t.test(data$Total[data$Rater==1], data$Total[data$Rater==2], paired=TRUE)
+pairwise.t.test(data$Total, AssessmentTime, paired=F, p.adj="bonferroni")
 
 
 ##ICC
 library(psych)
-sf <- matrix(c(9, 8, 7, 8,
-1, 1, 1, 1,
-8, 4, 6, 6,
-2, 1, 2, 3,
-10, 9, 9, 9,
-2, 2, 2, 2),ncol=4,byrow=TRUE)
-colnames(sf) <- paste("J",1:4,sep="")
-rownames(sf) <- paste("S",1:6,sep="")
-sf #example from Shrout and Fleiss (1979)
-ICC(sf)
-
 data.ICC <- cbind(subset(data["Total"], data$Rater==1),subset(data["Total"], data$Rater==2))
 colnames(data.ICC) <- c("Rater1", "Rater2")
 ICC(data.ICC)
 
+##kappa
+data.kappa <- cbind(subset(data["Global"], data$Rater==1),subset(data["Global"], data$Rater==2))
+kappa2(data.kappa, c(0,1,2,3,4))
+data.kappa <- cbind(subset(data["Total"], data$Rater==1),subset(data["Total"], data$Rater==2))
+kappa2(data.kappa, 0:(range(data.kappa)[2]-range(data.kappa)[1]))
 
