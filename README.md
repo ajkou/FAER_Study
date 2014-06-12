@@ -116,10 +116,11 @@ pairwise t-test across Time0/Time1/Time2; using bonferroni adjustment for 3 grou
 
 
 
-ANOVA construction
-ANOVA often us used for models with fixed-effects like AssessmentTime. Total/Proc/Ergo/Global response variables are shown. (Does this violate assumption about ordinal response variables?)
+
+ANOVA is often presented alongside models with fixed-effects like AssessmentTime. Total/Proc/Ergo/Global response variables are shown. (Does this violate assumption about ordinal response variables?)
 
 ANOVA Total Score
+
     data.aov <- aov(data$Total ~ Rater + AssessmentTime)
     
                     Df Sum Sq Mean Sq F value Pr(>F)
@@ -131,6 +132,7 @@ ANOVA Total Score
 
 
 ANOVA Proc Score
+
     data.aovProc <- aov(data$TotProc ~ Rater + AssessmentTime)
     
                     Df Sum Sq Mean Sq F value Pr(>F)
@@ -142,6 +144,7 @@ ANOVA Proc Score
 
 
 ANOVA Ergo Score
+
     data.aovErgo <- aov(data$TotErgo ~ Rater + AssessmentTime)
     
                     Df Sum Sq Mean Sq F value Pr(>F)
@@ -153,6 +156,7 @@ ANOVA Ergo Score
 
 
 ANOVA Global 5 Point Score
+
     data.aov5 <- aov(data$Global ~ Rater + AssessmentTime)
     
                     Df Sum Sq Mean Sq F value   Pr(>F)
@@ -172,6 +176,7 @@ Tukey-Kramer Multiple-Comparison Test (Tukey's Range Test or Tukey-Kramer Multip
 Does a pairwise comparison between the 3 time points. Results are equivalent to Ed's Scoring Summary.
 
 HSD Total Score
+
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -185,6 +190,7 @@ HSD Total Score
 
 
 HSD Proc Score
+
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -198,6 +204,7 @@ HSD Proc Score
 
 
 HSD Ergo Score
+
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -211,6 +218,7 @@ HSD Ergo Score
 
 
 HSD Global 5 Point Score
+
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -234,14 +242,15 @@ AssessmentTime1 and AssessmentTime2 are constructs for the 3 levels of Time0/Tim
 
 
 Linear regression Full Model
+
     Call:
     lm(formula = data$Total ~ Rater + AssessmentTime)
     
-Residuals:
+    Residuals:
          Min       1Q   Median       3Q      Max
     -11.9323  -2.9323  -0.1927   2.2917  11.8073
     
-Coefficients:
+    Coefficients:
                     Estimate Std. Error t value Pr(>|t|)
     (Intercept)      12.3698     0.6106  20.259   <2e-16 ***
     Rater2            0.8229     0.6106   1.348   0.1794
@@ -266,7 +275,7 @@ My understanding of MANOVA interpretation is a little hazy. I note that Rater ha
 
     manova(cbind(TotProc, TotErgo, Global) ~ Rater + AssessmentTime)
     
-Terms:
+    Terms:
                         Rater AssessmentTime Residuals
     resp 1             1.3333       954.0938 2003.5729
     resp 2            20.6719       452.8437  678.9375
@@ -293,18 +302,22 @@ Now this is the part about comparing raters.
 The simplest calculation for comparing Rater1/Rater2 would just be correlation coeff. Shown for Total, Proc, Ergo, and Global
 
 Total score
+
     >cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
     [1] 0.8725729
 
 Proc Score
+
     > cor(subset(data[,5], data$Rater==1), subset(data[,5], data$Rater==2))
     [1] 0.7975124
 
 Ergo Score
+
     > cor(subset(data[,6], data$Rater==1), subset(data[,6], data$Rater==2))
     [1] 0.827612
 
 Global Score
+
     > cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2))
     [1] 0.6748529
 
@@ -312,6 +325,7 @@ The correlation coeff values are all pretty high, indicating overall agreement i
 
 
 These Pearson correlation values can be tested for whether they are non zero.
+
 Total Score
 
     > cor.test(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
@@ -381,6 +395,7 @@ ICC3 for a fixed set of 2 judges seems to be the metric to use here. Shows an IC
 Kappa (Cohen's kappa coefficient for 2 raters) measuring inter-observer
 Kappa scores were used to by (Gaba 1998) and (Devitt 1997) called the "kappa statistic of agreement"
 Kappa on this scale is weighted by the difference in stated score. (If Rater1 marks a score of 8 and Rater2 marks 11, the weight is 11-8=3)
+
 Kappa measure of the Global Score Ranged (1-5)
 
     >kappa2(data.kappa, c(0,1,2,3,4))
@@ -406,7 +421,7 @@ Kappa measure of the Total Score Ranged (6-30)
             Z = 7.26
       P -Value = 0.000000000000374
 
-What does this mean? Wikipedia quotes some old papers,
+What does this mean? Wikipedia quotes some older papers,
     
     "Landis and Koch,[13] who characterized values < 0 as indicating no agreement and 0–0.20 as slight, 0.21–0.40 as fair, 0.41–0.60 as moderate, 0.61–0.80 as substantial, and 0.81–1 as almost perfect agreement."
 
@@ -420,6 +435,6 @@ and then it also says
 
 
 How about other measures of rater agreement?
-Cochran-Mantel-Haenszel test (used by Devitt 1998)
-Fleiss ' kappa
-Concordance correlation coefficient
+    Cochran-Mantel-Haenszel test (used by Devitt 1998)
+    Fleiss ' kappa
+    Concordance correlation coefficient
