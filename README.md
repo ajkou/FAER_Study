@@ -1,14 +1,12 @@
-FAER_Study
-==========
-Med Education Statistics
+Study construction:
+	Response variable: Total Score, Ergo Score, Proc Score, Global 5-point score
+	Independent variable: Rater[1,2], AssessmentTime[0,1,2]
+	Within-subject variable: Rater[1,2], AssessmentTime[0,1,2]
+	Between-subject variable:
+	Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
 
-This supplements stats by Ed M on participant scores before, through, and after specialized technical training
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/10%20all-blocks%20heatmap%20bytime.png)
 
-Response variables: Total Score, Ergo Score, Proc Score, Global 5-point score
-Independent variables: Rater, Time of Assessment
-Rater and AssessmentTime appear to be fixed-effect factors.
-Rater is a between-subject varible.
-AssessmentTime a within-subject variable
 
 First thing to do is to look at means of the Total Score across categories.
 
@@ -71,7 +69,6 @@ Probably yes, the mean floats around a reasonable central range.
 
 
 What about comparing the raters by t-test?
-Paired t-test across Rater1 and Rater2; the p-value is < 0.05
 
 > t.test(data$Total[data$Rater==1], data$Total[data$Rater==2], paired=TRUE)
 
@@ -85,20 +82,6 @@ Paired t-test across Rater1 and Rater2; the p-value is < 0.05
     sample estimates:
     mean of the differences
                  -0.8229167
-
-This p-value may indicate some overall differentiation between the raters.
-
-
-
-What about for Assessment Time? Can we use the pariwise t-test?
-pairwise t-test across Time0/Time1/Time2; using bonferroni adjustment for 3 groups; Should this be a paired t-test? Not sure. Shown with and without
-
-    >pairwise.t.test(data$Total, AssessmentTime, paired=FALSE, p.adj="bonferroni")
-      0      1
-    1 0.13   -
-    2 <2e-16 <2e-16
-    
-    P value adjustment method: bonferroni
     
     
     >pairwise.t.test(data$Total, AssessmentTime, paired=TRUE, p.adj="bonferroni")
@@ -112,14 +95,25 @@ pairwise t-test across Time0/Time1/Time2; using bonferroni adjustment for 3 grou
 
 
 
+Subject Repeated Measures ANOVA removes variablility created by individual effects from the F-test calculation. The highly disparate subject scores removes a huge chunk of variability
 
+> summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data1))
 
+Error: Subj
+          Df Sum Sq Mean Sq F value Pr(>F)
+Residuals 31   1779    57.4               
 
+Error: Within
+                      Df Sum Sq Mean Sq F value Pr(>F)    
+Rater                  1   32.5    32.5   3.238 0.0739 .  
+AssessmentTime         2 2672.5  1336.2 133.116 <2e-16 ***
+Rater:AssessmentTime   2   28.9    14.5   1.442 0.2396    
+Residuals            155 1555.9    10.0                   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
+Both Rater and AssessmentTime have a case for showing a difference in means. This shows no interaction effect between Rater and AssessmentTime.
 
-ANOVA is often presented alongside models with fixed-effects like AssessmentTime. Total/Proc/Ergo/Global response variables are shown. (Does this violate assumption about ordinal response variables?)
-
-ANOVA Total Score
 
     data.aov <- aov(data$Total ~ Rater + AssessmentTime)
     
@@ -234,14 +228,8 @@ HSD Global 5 Point Score
 
 
 
-
-
-OLS construction
-This is probably how these results would be presented econometrically. Calculations are basically the same as ANOVA
-AssessmentTime1 and AssessmentTime2 are constructs for the 3 levels of Time0/Time1/Time2
-
-
-Linear regression Full Model
+Linear Model Full
+AssessmentTime1 and AssessmentTime2 are lm constructs for the 3 levels of Time0/Time1/Time2
 
     Call:
     lm(formula = data$Total ~ Rater + AssessmentTime)
@@ -268,37 +256,7 @@ Linear regression Full Model
 
 
 
-
-MANOVA approach
-This would be construction for Multiple ANOVA if scoring was an incorporation of 3 idepedently available scoring systems. (Proc score, Ergo score, and Global)
-My understanding of MANOVA interpretation is a little hazy. I note that Rater has tested sig different here.
-
-    manova(cbind(TotProc, TotErgo, Global) ~ Rater + AssessmentTime)
-    
-    Terms:
-                        Rater AssessmentTime Residuals
-    resp 1             1.3333       954.0938 2003.5729
-    resp 2            20.6719       452.8437  678.9375
-    resp 3             0.8802        51.5938  126.2292
-    Deg. of Freedom         1              2       188
-    
-    Residual standard error: 3.264552 1.90036 0.8194094
-    Estimated effects may be unbalanced
-    
-                    Df  Pillai approx F num Df den Df    Pr(>F)
-    Rater            1 0.06307   4.1732      3    186  0.006891 **
-    AssessmentTime   2 0.49736  20.6318      6    374 < 2.2e-16 ***
-    Residuals 188
-    ---
-    Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-
-
-
-
-
-
-Now this is the part about comparing raters.
+Comparing Rater1 and Rater2.
 The simplest calculation for comparing Rater1/Rater2 would just be correlation coeff. Shown for Total, Proc, Ergo, and Global
 
 Total score
@@ -429,12 +387,3 @@ and then it also says
     
     "Fleiss's[15]:218 equally arbitrary guidelines characterize kappas over 0.75 as excellent, 0.40 to 0.75 as fair to good, and below 0.40 as poor."
 
-
-
-
-
-
-How about other measures of rater agreement?
-    Cochran-Mantel-Haenszel test (used by Devitt 1998)
-    Fleiss ' kappa
-    Concordance correlation coefficient
