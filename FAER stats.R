@@ -71,9 +71,12 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 		Subj<-factor(Subj)
 	})
 	#AOV Subject in error term
-	summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data1))
+	summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+	summary(aov(TotProc ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+	summary(aov(TotErgo ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+	summary(aov(Global ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
 	#AOV Subject with Rater as a between-subjects variable; residual calc is different from NCSS	
-	summary(aov(Total ~ Rater*AssessmentTime+Error(Subj/(Rater)), data = data1))
+	summary(aov(Total ~ Rater*AssessmentTime+Error(Subj/(Rater)), data = data.rm))
  	#Try LME?
 	library(nlme)
 	summary(lme(Total ~ Rater * AssessmentTime, random=~1 |Subj, data=data.rm,))
@@ -171,6 +174,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	boxplot(Total.continuous~survey_data[,2], main="Tot_C")
 	dev.off()
 
+	par(mfrow = c( 1, 2 ))
 	#Total S-blocks line plot over timep
 	plot(survey_data[,2], Total.singleInjection)
 	for( i in c(1:18,20:32)){
@@ -187,6 +191,28 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	boxplot(Total.continuous ~survey_data[,2], main="Tot_S")
 	apply(cbind(Total.continuous [survey_data[,2]==0],Total.continuous[survey_data[,2]==1],Total.continuous[survey_data[,2]==2],Total.continuous[survey_data[,2]==3],Total.continuous[survey_data[,2]==4]),2,hist)
 
+	#Obstacle Ratings
+	Obstacles.frame <- replace(survey_data[,50:58],survey_data[,50:58]==0, NA)
+	boxplot(Obstacles.frame , main="Obstacles", yaxt="n", xaxt="n", xlim=c(0.5,10),horizontal=T, ylim=c(-4,5))
+	text(rep(-4,9), 1:9,labels=names(survey_data)[50:58], pos=4, cex=0.75)
+	text((1:5)-0.2, rep(10,5),labels=1:5, pos=4, cex=1.1)
+	
+	#Effective Teaching Methods
+	Teaching.frame <- replace(survey_data[,60:68],apply(survey_data[,60:68],2,substr,1,1)=="0", NA)
+	Teaching.frame$EffectiveTeachingMethods.Cadaverlab <- as.numeric(as.character(Teaching.frame[,9]))
+	boxplot(Teaching.frame, main="Teaching", yaxt="n", xaxt="n", xlim=c(0.5,10),horizontal=T, ylim=c(-4,5))
+	text(rep(-4,9), 1:9,labels=names(survey_data)[60:68], pos=4, cex=0.75)
+	text((1:5)-0.2, rep(10,56),labels=1:5, pos=4, cex=1.1)
+
+	#Use of Learning Methods
+	Learning.frame <- survey_data[,69:77]
+	Learning.frame <- replace(Learning.frame, Learning.frame==4, 1) 
+	Learning.frame.plot <- apply(Learning.frame,2,table)
+	Learning.frame.plot <- rbind(Learning.frame.plot[1,order(Learning.frame.plot[2,])], sort(Learning.frame.plot[2,]))
+	barplot(Learning.frame.plot, main="Used Learning Methods", yaxt="n", xaxt="n", horiz=T, legend=c("Yes", "No"), xlim=c(-125,200), ylim=c(-1,10))
+	text(rep(-125,9), (1:9*1.2)-0.5,labels=colnames(Learning.frame.plot), pos=4, cex=0.75)
+	text(seq(0,150,50)-7, rep(-1,4), labels=seq(0,150,50), pos=4, cex=1.1)
+
 	##rmANOVA
 	#AOV Subject in error term
 	summary(aov(Total.singleInjection~ QTR+Error(SUBJ), data = survey_data))
@@ -201,66 +227,87 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 
 
 	#Linear Model
-	QTR = factor(survey_data$QTR)
-	var.teaching <- (demo_data[,7])[c(TRUE,FALSE,FALSE)]
-	var.teaching <- var.teaching[c(1:18,20:32)]
-	var.teaching <- replace(as.character(var.teaching), var.teaching=="NT", "0")
-	var.teaching <- replace(as.character(var.teaching), var.teaching=="T", "1")
-	var.teaching <- as.numeric(var.teaching)
-	var.teaching <- rep(var.teaching, each=5)
-	summary( lm(Total.singleInjection~ var.teaching))
-	summary( lm(Total.continuous~ var.teaching ))
+		Total.singleInjection.Ag <- (
+		subset(Total.singleInjection, c(F,T,F,F,F)) + 
+		subset(Total.singleInjection, c(F,F,T,F,F)) + 
+		subset(Total.singleInjection, c(F,F,F,T,F)) +
+		subset(Total.singleInjection, c(F,F,F,F,T))
+		)
+		singleInjection.T0 <- subset(Total.singleInjection, c(T,F,F,F,F))
+		Total.continuous.Ag <- (
+		subset(Total.continuous, c(F,T,F,F,F)) + 
+		subset(Total.continuous, c(F,F,T,F,F)) + 
+		subset(Total.continuous, c(F,F,F,T,F)) +
+		subset(Total.continuous, c(F,F,F,F,T))
+		)
+		Total.continuous.T0 <- subset(Total.continuous, c(T,F,F,F,F))
+		
+		QTR = factor(survey_data$QTR)
+		
+		#Gender from demographic survey 0=Non Teaching, 1=Teaching
+		var.teaching <- (demo_data[,7])[c(TRUE,FALSE,FALSE)]
+		var.teaching <- var.teaching[c(1:18,20:32)]
+		var.teaching <- replace(as.character(var.teaching), var.teaching=="NT", "0")
+		var.teaching <- replace(as.character(var.teaching), var.teaching=="T", "1")
+		var.teaching <- as.numeric(var.teaching)
+		#var.teaching <- rep(var.teaching, each=5)
+		
+		#Skill test scores from Video scores
+		cuScores <- rep(
+		#data[,4][c(T,F,F,F,F,F)] + 
+		#data[,4][c(F,T,F,F,F,F)] + 
+		#data[,4][c(F,F,T,F,F,F)] + 
+		#data[,4][c(F,F,F,T,F,F)] +
+		data[,4][c(F,F,F,F,T,F)] +
+		data[,4][c(F,F,F,F,F,T)]
+		)
+		
+		#Gender from demographic survey 0=Male, 1=Female
+		var.gender <- (demo_data[,4])[c(TRUE,FALSE,FALSE)]
+		var.gender <- var.gender [c(1:18,20:32)]
+		var.gender <- replace(as.character(var.gender ), var.gender =="M", "0")
+		var.gender <- replace(as.character(var.gender ), var.gender =="F", "1")
+		var.gender <- as.numeric(var.gender)
+		#var.gender <- rep(var.gender, each=5)
+		
+		#Age and years of practice from demographic survey
+		var.age <- (demo_data[,3])[c(TRUE,FALSE,FALSE)]
+		var.age <- var.age [c(1:18,20:32)]
+		var.age <- as.numeric(var.age )
+		var.exp <- (demo_data[,5])[c(TRUE,FALSE,FALSE)]
+		var.exp <- var.exp [c(1:18,20:32)]
+		var.exp <- as.numeric(var.exp)
+		#var.age <- rep(var.age , each=5)
+		#var.exp <- rep(var.exp , each=5)
+		
 
-	summary( lm(Total.singleInjection~ QTR))
-	summary( lm(Total.continuous~ QTR))
-	summary( lm(Total.singleInjection~ var.teaching ))
-	summary( lm(Total.continuous~ var.teaching ))
-
-	cuScores <- rep((
-	data[,4][c(T,F,F,F,F,F)] + 
-	data[,4][c(F,T,F,F,F,F)] + 
-	data[,4][c(F,F,T,F,F,F)] + 
-	data[,4][c(F,F,F,T,F,F)] +
-	data[,4][c(F,F,F,F,T,F)] +
-	data[,4][c(F,F,F,F,F,T)]
-	), each=5)
-	summary( lm(Total.singleInjection~ cuScores ))
-	summary( lm(Total.continuous~ cuScores ))
-
-	var.gender <- (demo_data[,4])[c(TRUE,FALSE,FALSE)]
-	var.gender <- var.gender [c(1:18,20:32)]
-	var.gender <- replace(as.character(var.gender ), var.gender =="M", "0")
-	var.gender <- replace(as.character(var.gender ), var.gender =="F", "1")
-	var.gender <- as.numeric(var.gender)
-	var.gender <- rep(var.gender, each=5)
-	summary( lm(Total.singleInjection~ var.gender ))
-	summary( lm(Total.continuous~ var.gender ))
-
-	var.age <- (demo_data[,3])[c(TRUE,FALSE,FALSE)]
-	var.age <- var.age [c(1:18,20:32)]
-	var.age <- as.numeric(var.age )
-	var.age <- rep(var.age , each=5)
-	summary( lm(Total.singleInjection~ var.age ))
-	summary( lm(Total.continuous~ var.age ))
-
-	Total.singleInjection.sscore <- (
-	Total.singleInjection[c(T,F,F,F,F)] + 
-	Total.singleInjection[c(F,T,F,F,F)] + 
-	Total.singleInjection[c(F,F,T,F,F)] + 
-	Total.singleInjection[c(F,F,F,T,F)] +
-	Total.singleInjection[c(F,F,F,F,T)]
-	)
-	Total.continuous.sscore <- (
-	Total.continuous[c(T,F,F,F,F)] + 
-	Total.continuous[c(F,T,F,F,F)] + 
-	Total.continuous[c(F,F,T,F,F)] + 
-	Total.continuous[c(F,F,F,T,F)] +
-	Total.continuous[c(F,F,F,F,T)]
-	)
-	summary( lm(Total.singleInjection~ var.age + var.gender+ var.teaching +cuScores + QTR))
-	summary( lm(Total.continuous~ var.age + var.gender+ var.teaching +cuScores+QTR))
+		summary( lm(Total.singleInjection.Ag~ var.teaching))
+		summary( lm(Total.continuous.Ag~ var.teaching ))
+		summary( lm(Total.singleInjection.Ag~ singleInjection.T0))
+		summary( lm(Total.continuous.Ag~ continuous.T0))
+		summary( lm(Total.singleInjection.Ag~ cuScores ))
+		summary( lm(Total.continuous.Ag~ cuScores ))
+		summary( lm(Total.singleInjection.Ag~ var.gender ))
+		summary( lm(Total.continuous.Ag~ var.gender ))
+		summary( lm(Total.singleInjection.Ag~ var.age ))
+		summary( lm(Total.continuous.Ag~ var.age ))
+		summary( lm(Total.singleInjection.Ag~ var.exp ))
+		summary( lm(Total.continuous.Ag~ var.exp ))
+		summary( lm(Total.singleInjection.Ag~ var.age + var.gender+ var.teaching +cuScores ))
+		summary( lm(Total.continuous.Ag~ var.age + var.gender+ var.teaching +cuScores))
+		#Most Resonable Model so far
+		summary( lm(Total.continuous.Ag~ singleInjection.T0+var.exp+var.teaching))
 
 
+		#Dependent Variable Scatterplot Matrix
+		library(car)
+		this.gender <- ((demo_data[,4])[c(TRUE,FALSE,FALSE)])[c(1:18,20:32)]
+		scatterplotMatrix(~var.exp+var.age |this.gender )
+
+		this.teaching <- ((demo_data[,7])[c(TRUE,FALSE,FALSE)])[c(1:18,20:32)]
+		scatterplotMatrix(~Total.singleInjection.Ag+cuScores+singleInjection.T0+var.exp|this.teaching )
+
+		scatterplotMatrix(~Total.singleInjection.Ag+Total.continuous.Ag |this.teaching )
 
 	#nxn correlation plots ; stronger filter
 	correlation.pickpops <- apply(apply(apply(survey_data,2,as.character),2,as.numeric), 2, median)
@@ -279,6 +326,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	correlation.append[correlation.append[,3]>(0.7),]
 	correlation.append[correlation.append[,3]<(-0.3),]
 	sink()
+
 
 	#heatmap1
 	singleInjection <- apply(apply(survey_data[,grep("N.S.", names(survey_data))], 2, as.character), 2, as.numeric)
@@ -323,8 +371,8 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	colnames(x) <- c("Time0", "Time1", "Time2", "Time3", "Time4")
 	heatmap(x, Rowv = NA, Colv = NA,col = cm.colors(256), scale = "row", main="Continuous Blocks (time total)")
  	#Block type heatmap
-	x <- cbind(timep.0.SI, timep.1.SI, timep.2.SI, timep.3.SI, timep.4.SI), timep.0.C, timep.1.C, timep.2.C, timep.3.C, timep.4.C)
+	x <- cbind(timep.0.SI, timep.1.SI, timep.2.SI, timep.3.SI, timep.4.SI, timep.0.C, timep.1.C, timep.2.C, timep.3.C, timep.4.C)
 	rownames(x) <- as.character(c(1:18,20:32))
-	colnames(x) <- c("Time0", "Time1", "Time2", "Time3", "Time4"), "Time0", "Time1", "Time2", "Time3", "Time4")
+	colnames(x) <- c("Time0", "Time1", "Time2", "Time3", "Time4", "Time0", "Time1", "Time2", "Time3", "Time4")
 	heatmap(x, Rowv = NA, Colv = NA,col = cm.colors(256), scale = "row", main="All blocks (count total)", xlab = "Single I                                 Continuous   ", margins=c(7,2))
  

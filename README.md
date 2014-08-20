@@ -136,54 +136,37 @@ An p statistic > 0.05 would indicate a pairwise comparison of quarters not to be
 
 
 Linear model (least squares regession):
-Count totals regressed on common sense factors like age of participant, gender, teaching-hospital/non-teaching, and aggregate of video scores given by the raters.
 Data has been transformed in this model to remove longitudinal effects of Time0-Time4.
-While teaching/non-teaching and gender could sometimes have a relationship with number of blocks performed, the variability is far too high to show this statistically.
+R-square values also show that this model doesn't fit that great. Additional model tuning could increase fit.
+Count totals regressed on common sense factors like:
+	Number of blocks at Time0: Highly related variable.
+	Age of participant: Closesly related variable [Years of Experience] found to be a better explanatory
+	Gender: Not a strong factor.
+	Teaching-hospital/non-teaching: Weak factor
+	Aggregate of video scores(AssessmentTime2): Not a factor
 
-> summary( lm(Total.singleInjection.Ag~ var.age + var.gender+ var.teaching +cuScores ))
-
-	Call:
-	lm(formula = Total.singleInjection.Ag ~ var.age + var.gender + 
-	    var.teaching + cuScores)
-	
-	Residuals:
-	   Min     1Q Median     3Q    Max 
-	61.81 -39.60  -6.79  17.85 150.86 
-	
-	Coefficients:
-	             Estimate Std. Error t value Pr(>|t|)
-	(Intercept)  -25.5244   113.8256  -0.224    0.824
-	var.age        0.9182     1.6398   0.560    0.580
-	var.gender     8.5645    25.7294   0.333    0.742
-	var.teaching  10.4026    23.2782   0.447    0.659
-	cuScores       0.5671     1.1270   0.503    0.619
-	
-	Residual standard error: 57.38 on 26 degrees of freedom
-	Multiple R-squared: 0.02341,    Adjusted R-squared: -0.1268 
-	F-statistic: 0.1558 on 4 and 26 DF,  p-value: 0.9586 
-
-> summary( lm(Total.continuous.Ag~ var.age + var.gender+ var.teaching +cuScores))
+> summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
 
 	Call:
-	lm(formula = Total.continuous.Ag ~ var.age + var.gender + var.teaching + 
-	    cuScores)
+	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + 
+	    var.exp + var.teaching)
 	
 	Residuals:
 	    Min      1Q  Median      3Q     Max 
-	-10.221  -6.311  -3.909  -0.154  41.547 
+	-93.395 -25.433   0.928  12.934  70.565 
 	
 	Coefficients:
-	             Estimate Std. Error t value Pr(>|t|)
-	(Intercept)   14.9957    24.7519   0.606    0.550
-	var.age       -0.0127     0.3566  -0.036    0.972
-	var.gender    -7.4817     5.5950  -1.337    0.193
-	var.teaching  -3.3394     5.0620  -0.660    0.515
-	cuScores      -0.1299     0.2451  -0.530    0.601
+                   Estimate Std. Error t value Pr(>|t|)    
+	(Intercept)        -41.8563    27.4032  -1.527   0.1383    
+	singleInjection.T0   3.3405     0.5591   5.975 2.26e-06 ***
+	var.exp              2.3295     0.9758   2.387   0.0242 *  
+	var.teaching        21.2014    14.9024   1.423   0.1663    
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 	
-	Residual standard error: 12.48 on 26 degrees of freedom
-	Multiple R-squared: 0.07583,    Adjusted R-squared: -0.06635 
-	F-statistic: 0.5333 on 4 and 26 DF,  p-value: 0.7124 
-
+	Residual standard error: 37.23 on 27 degrees of freedom
+	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
+	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
 
 Prior stats on video scores from June 2014 remain archived in this repo at:
 https://github.com/ajkou/FAER_Study/blob/master/README1.md
