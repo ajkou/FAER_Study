@@ -95,7 +95,7 @@ An F statistic > 0.05 would indicate no stage [Time0, Time1, Time2, Time3, Time4
 
 
 Tukey's range test on number of blocks performed:
-An p statistic > 0.05 would indicate a pairwise comparison of quarters not to be significantly different
+A p statistic > 0.05 would indicate a pairwise comparison of quarters not to be significantly different
 
 > TukeyHSD(aov(Total.singleInjection~ QTR), 'QTR', conf.level=0.95)
 	  Tukey multiple comparisons of means
@@ -139,6 +139,7 @@ Linear model (least squares regession):
 Data has been transformed in this model to remove longitudinal effects of Time0-Time4.
 R-square values also show that this model doesn't fit that great. Additional model tuning could increase fit.
 Count totals regressed on common sense factors like:
+
 	Number of blocks at Time0: Highly related variable.
 	Age of participant: Closesly related variable [Years of Experience] found to be a better explanatory
 	Gender: Not a strong factor.
