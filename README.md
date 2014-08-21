@@ -34,6 +34,7 @@ Note that the intesity of the colors denotes relative values for the individual.
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%20SI-blocks%20heatmap.png)
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/9%20c-blocks%20heatmap.png)
+
 Only a few participants (subjects 2,16,18, and 23) were active in performing continuous blocks
 
 Other explanatory variables can be shown via scatterplot matrix.
@@ -54,9 +55,10 @@ This is the set of count totals of continuous blocks performed for Time0 to Time
 
 
 Comparing the rate of single-injection blocks, video scores, number of single-injection experience stated at Time0, and years of experience.
-Further, single-injection count stated at Time0 is related to count of blocks performed in the following 12 months.
 What trends do you see in this 4x4? 
 I see a plausible relationship between years of experience and prior performance (total number of blocks at T=0)
+Further, single-injection count stated at Time0 is related to count of blocks performed in the following 12 months.
+
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/13%20scattermatrix%20SI%20blocks.png)
 
 This can be quickly checked using a linear model (least squares regession):
