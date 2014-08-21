@@ -213,6 +213,18 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	text(rep(-125,9), (1:9*1.2)-0.5,labels=colnames(Learning.frame.plot), pos=4, cex=0.75)
 	text(seq(0,150,50)-7, rep(-1,4), labels=seq(0,150,50), pos=4, cex=1.1)
 
+	#Events
+	Event.frame <- survey_data[,47:49]
+	Event.frame <- replace(Event.frame, Event.frame=="Less than 5", 4)
+	Event.frame <- apply(apply(Event.frame,2,as.character),2, as.numeric) 
+	Event.frame.scsrate <- cbind(timep.0[,47], timep.1[,47], timep.2[,47], timep.3[,47], timep.4[,47])
+	Event.frame.puncture <- cbind(timep.0[,48], timep.1[,48], timep.2[,48], timep.3[,48], timep.4[,48])
+	Event.frame.arrest <- cbind(timep.0[,49], timep.1[,49], timep.2[,49], timep.3[,49], timep.4[,49])
+	par(mfrow=c(1,3))
+	boxplot(Event.frame.scsrate , main=names(survey_data[47]))
+	boxplot(Event.frame.puncture , main=names(survey_data[48]), cex.main=0.85)
+	boxplot(Event.frame.arrest , main=names(survey_data[49]), cex.main=0.85)
+
 	##rmANOVA
 	#AOV Subject in error term
 	summary(aov(Total.singleInjection~ QTR+Error(SUBJ), data = survey_data))
@@ -296,8 +308,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 		summary( lm(Total.singleInjection.Ag~ var.age + var.gender+ var.teaching +cuScores ))
 		summary( lm(Total.continuous.Ag~ var.age + var.gender+ var.teaching +cuScores))
 		#Most Resonable Model so far
-		summary( lm(Total.continuous.Ag~ singleInjection.T0+var.exp+var.teaching))
-
+		summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
 
 		#Dependent Variable Scatterplot Matrix
 		library(car)

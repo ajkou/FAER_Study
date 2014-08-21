@@ -53,10 +53,47 @@ This is the set of count totals of continuous blocks performed for Time0 to Time
  [1]  3 39  0  3  6  1  2  0  0  0  0  0  3  0  1 49  0 24  5  0  4  2 28  4  0  0  0  3  0  4  0
 
 
-Comparing the rate of single-injection blocks, video scores, number of single-injection experience stated at Time0, and years of experience. 
+Comparing the rate of single-injection blocks, video scores, number of single-injection experience stated at Time0, and years of experience.
+Further, single-injection count stated at Time0 is related to count of blocks performed in the following 12 months.
 What trends do you see in this 4x4? 
 I see a plausible relationship between years of experience and prior performance (total number of blocks at T=0)
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/13%20scattermatrix%20SI%20blocks.png)
+
+This can be quickly checked using a linear model (least squares regession):
+Data has been transformed in this model to remove longitudinal effects of Time0-Time4.
+R-square values also show that this model doesn't fit that great. Additional model tuning could increase fit.
+Count totals regressed on common sense factors like:
+
+	Number of blocks at Time0: Highly related variable.
+	Age of participant: Other closesly related variable [Years of Experience] found to be a better explanatory
+	Years of experience (var.exp): Related variable 
+	Gender: Not a strong factor.
+	Teaching-hospital/non-teaching (var.teaching): Weak factor
+	Aggregate of video scores during AssessmentTime2: Not a factor
+
+> summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
+
+	Call:
+	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + 
+	    var.exp + var.teaching)
+	
+	Residuals:
+	    Min      1Q  Median      3Q     Max 
+	-93.395 -25.433   0.928  12.934  70.565 
+	
+	Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+	(Intercept)        -41.8563    27.4032  -1.527   0.1383    
+	singleInjection.T0   3.3405     0.5591   5.975 2.26e-06 ***
+	var.exp              2.3295     0.9758   2.387   0.0242 *  
+	var.teaching        21.2014    14.9024   1.423   0.1663    
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+	
+	Residual standard error: 37.23 on 27 degrees of freedom
+	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
+	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
+
 
 Survey results of  stated Obstacles to implementation
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/15%20barplot%20obstacles.png)
@@ -135,39 +172,6 @@ A p statistic > 0.05 would indicate a pairwise comparison of quarters not to be 
 	4-3  0.45161290 -1.6216624 2.524888 0.9746699
 
 
-Linear model (least squares regession):
-Data has been transformed in this model to remove longitudinal effects of Time0-Time4.
-R-square values also show that this model doesn't fit that great. Additional model tuning could increase fit.
-Count totals regressed on common sense factors like:
-
-	Number of blocks at Time0: Highly related variable.
-	Age of participant: Closesly related variable [Years of Experience] found to be a better explanatory
-	Gender: Not a strong factor.
-	Teaching-hospital/non-teaching: Weak factor
-	Aggregate of video scores(AssessmentTime2): Not a factor
-
-> summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
-
-	Call:
-	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + 
-	    var.exp + var.teaching)
-	
-	Residuals:
-	    Min      1Q  Median      3Q     Max 
-	-93.395 -25.433   0.928  12.934  70.565 
-	
-	Coefficients:
-                   Estimate Std. Error t value Pr(>|t|)    
-	(Intercept)        -41.8563    27.4032  -1.527   0.1383    
-	singleInjection.T0   3.3405     0.5591   5.975 2.26e-06 ***
-	var.exp              2.3295     0.9758   2.387   0.0242 *  
-	var.teaching        21.2014    14.9024   1.423   0.1663    
-	---
-	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
-	
-	Residual standard error: 37.23 on 27 degrees of freedom
-	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
-	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
 
 Prior stats on video scores from June 2014 remain archived in this repo at:
 https://github.com/ajkou/FAER_Study/blob/master/README1.md
