@@ -174,6 +174,8 @@ A p statistic > 0.05 would indicate a pairwise comparison of quarters not to be 
 	4-3  0.45161290 -1.6216624 2.524888 0.9746699
 
 
+Survey statistics on events
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/18%20boxplot%20events.png)
 
 Prior stats on video scores from June 2014 remain archived in this repo at:
 https://github.com/ajkou/FAER_Study/blob/master/README1.md

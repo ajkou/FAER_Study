@@ -5,12 +5,11 @@ Study construction:
 	Between-subject variable:
 	Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
 
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%20Scores%20bar.png)
+A few basic aspects of the data
 
 
-First thing to do is to look at means of the Total Score across categories.
-Does this scoring system have desirable characteristics of central tendency? 
-Probably yes, the mean floats around a reasonable central range.\
-
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/3%20Total%20box2input.png)
 Total Score Description
     Grand mean
     16.14062
@@ -23,6 +22,7 @@ Total Score Description
         0     1     2
     12.78 14.30 21.34
 
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/4%20TotProc%20box2input.png)
 Proc score Description
     Grand mean
     10.375
@@ -34,7 +34,8 @@ Proc score Description
     AssessmentTime
         0     1     2
      8.11  9.61 13.41
-     
+
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/5%20TotErgo%20box2input.png)
 Ergo score Description
     Grand mean
     5.765625
@@ -47,6 +48,7 @@ Ergo score Description
        0    1    2
     4.67 4.69 7.94
 
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/6%20Global%20box2input.png)
 Global score Description
     Grand mean
     2.109375
@@ -171,7 +173,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Tukey-Kramer Multiple-Comparison Test (Tukey's Range Test or Tukey-Kramer Multiple-Comparison Test)
 Does a pairwise comparison between the 3 time points. Results are equivalent to Ed's Scoring Summary.
-
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%20Scores%20bar.png)
 HSD Total Score
 
       Tukey multiple comparisons of means
