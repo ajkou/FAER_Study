@@ -66,7 +66,6 @@ Global score Description
 
 Comparing the raters by t-test?
 > t.test(data$Total[data$Rater==1], data$Total[data$Rater==2], paired=TRUE)
-
     Paired t - test
 
     data:  data$Total[data$Rater == 1] and data$Total[data$Rater == 2]
@@ -95,63 +94,64 @@ Both Rater and AssessmentTime have a case for showing a difference in means, esp
 No interaction effect between Rater and AssessmentTime relating to these 4 scoring schemes.
 
 ANOVA Total Score
-> summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
-
-Error: Subj
-          Df Sum Sq Mean Sq F value Pr(>F)
-Residuals 30   1725   57.49               
-
-Error: Within
-                      Df Sum Sq Mean Sq F value Pr(>F)    
-Rater                  1   31.1    31.1   3.058 0.0824 .  
-AssessmentTime         2 2493.8  1246.9 122.798 <2e-16 ***
-Rater:AssessmentTime   2   27.1    13.6   1.335 0.2663    
-Residuals            150 1523.1    10.2                   
+    > summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+    
+Error:     Subj
+              Df Sum Sq Mean Sq F value Pr(>F)
+    Residuals 30   1725   57.49
+    
+Error:     Within
+                          Df Sum Sq Mean Sq F value Pr(>F)
+    Rater                  1   31.1    31.1   3.058 0.0824 .
+    AssessmentTime         2 2493.8  1246.9 122.798 <2e-16 ***
+    Rater:AssessmentTime   2   27.1    13.6   1.335 0.2663
+    Residuals            150 1523.1    10.2
 
 
 ANOVA Proc Score
-> summary(aov(TotProc ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
-
-Error: Subj
-          Df Sum Sq Mean Sq F value Pr(>F)
-Residuals 30   1052   35.07               
-
-Error: Within
-                      Df Sum Sq Mean Sq F value Pr(>F)    
-Rater                  1    1.7     1.7   0.309  0.579    
-AssessmentTime         2  880.0   440.0  78.147 <2e-16 ***
-Rater:AssessmentTime   2   10.1     5.0   0.897  0.410    
-Residuals            150  844.5     5.6                   
+    > summary(aov(TotProc ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+    
+Error:     Subj
+              Df Sum Sq Mean Sq F value Pr(>F)
+    Residuals 30   1052   35.07
+    
+Error:     Within
+                          Df Sum Sq Mean Sq F value Pr(>F)
+    Rater                  1    1.7     1.7   0.309  0.579
+    AssessmentTime         2  880.0   440.0  78.147 <2e-16 ***
+    Rater:AssessmentTime   2   10.1     5.0   0.897  0.410
+    Residuals            150  844.5     5.6
 
 
 ANOVA Ergo Score
-> summary(aov(TotErgo ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
-
-Error: Subj
-          Df Sum Sq Mean Sq F value Pr(>F)
-Residuals 30    250   8.332               
-
-Error: Within
-                      Df Sum Sq Mean Sq F value Pr(>F)    
-Rater                  1   18.1   18.09   6.458 0.0121 *  
-AssessmentTime         2  430.1  215.07  76.791 <2e-16 ***
-Rater:AssessmentTime   2    4.3    2.17   0.774 0.4632    
-Residuals            150  420.1    2.80                   
+    > summary(aov(TotErgo ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+    
+Error:     Subj
+              Df Sum Sq Mean Sq F value Pr(>F)
+    Residuals 30    250   8.332
+    
+Error:     Within
+                          Df Sum Sq Mean Sq F value Pr(>F)
+    Rater                  1   18.1   18.09   6.458 0.0121 *
+    AssessmentTime         2  430.1  215.07  76.791 <2e-16 ***
+    Rater:AssessmentTime   2    4.3    2.17   0.774 0.4632
+    Residuals            150  420.1    2.80
 
 
 ANOVA Global Score [1,5]
-> summary(aov(Global ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
-
-Error: Subj
-          Df Sum Sq Mean Sq F value Pr(>F)
-Residuals 30  58.47   1.949               
-
-Error: Within
-                      Df Sum Sq Mean Sq F value Pr(>F)    
-Rater                  1   0.91   0.909   2.229 0.1375    
-AssessmentTime         2  50.33  25.167  61.744 <2e-16 ***
-Rater:AssessmentTime   2   2.78   1.392   3.416 0.0354 *  
-Residuals            150  61.14   0.408                   
+    > summary(aov(Global ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+    
+Error:     Subj
+              Df Sum Sq Mean Sq F value Pr(>F)
+    Residuals 30  58.47   1.949
+    
+Error:     Within
+                          Df Sum Sq Mean Sq F value Pr(>F)
+    Rater                  1   0.91   0.909   2.229 0.1375
+    AssessmentTime         2  50.33  25.167  61.744 <2e-16 ***
+    Rater:AssessmentTime   2   2.78   1.392   3.416 0.0354 *
+    Residuals            150  61.14   0.408
+           
 
 
 
@@ -246,22 +246,18 @@ Comparing Rater1 and Rater2.
 The simplest calculation for comparing Rater1/Rater2 would just be correlation coeff. Shown for Total, Proc, Ergo, and Global
 
 Total score
-
     >cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
     [1] 0.8725729
 
 Proc Score
-
     > cor(subset(data[,5], data$Rater==1), subset(data[,5], data$Rater==2))
     [1] 0.7975124
 
 Ergo Score
-
     > cor(subset(data[,6], data$Rater==1), subset(data[,6], data$Rater==2))
     [1] 0.827612
 
 Global Score
-
     > cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2))
     [1] 0.6748529
 
