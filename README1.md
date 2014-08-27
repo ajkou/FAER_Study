@@ -8,13 +8,14 @@ Study construction:
 
     Between-subject variable: Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
 
-A few basic aspects of the data
+First thing to do is to illustrate a few basic aspects of the data.
 
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/3%20Total%20box2input.png)
 
 Total Score Description
-    Grand mean
+    
+	Grand mean
     16.14062
     
     Rater
@@ -28,7 +29,8 @@ Total Score Description
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/4%20TotProc%20box2input.png)
 
 Proc score Description
-    Grand mean
+    
+	Grand mean
     10.375
     
     Rater
@@ -42,7 +44,8 @@ Proc score Description
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/5%20TotErgo%20box2input.png)
 
 Ergo score Description
-    Grand mean
+    
+	Grand mean
     5.765625
     
     Rater
@@ -56,7 +59,8 @@ Ergo score Description
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/6%20Global%20box2input.png)
 
 Global score Description
-    Grand mean
+    
+	Grand mean
     2.109375
     
     Rater
@@ -255,19 +259,19 @@ The simplest calculation for comparing Rater1/Rater2 would just be correlation c
 
 Total score
 >cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
-    [1] 0.8725729
+    0.8725729
 
 Proc Score
 > cor(subset(data[,5], data$Rater==1), subset(data[,5], data$Rater==2))
-    [1] 0.7975124
+    0.7975124
 
 Ergo Score
 > cor(subset(data[,6], data$Rater==1), subset(data[,6], data$Rater==2))
-    [1] 0.827612
+    0.827612
 
 Global Score
 > cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2))
-    [1] 0.6748529
+    0.6748529
 
 The correlation coeff values are all pretty high, indicating overall agreement in the scoring system
 
