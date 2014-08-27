@@ -259,19 +259,23 @@ The simplest calculation for comparing Rater1/Rater2 would just be correlation c
 
 Total score
 >cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
-    0.8725729
+    
+	0.8725729
 
 Proc Score
 > cor(subset(data[,5], data$Rater==1), subset(data[,5], data$Rater==2))
-    0.7975124
+    
+	0.7975124
 
 Ergo Score
 > cor(subset(data[,6], data$Rater==1), subset(data[,6], data$Rater==2))
-    0.827612
+    
+	0.827612
 
 Global Score
 > cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2))
-    0.6748529
+    
+	0.6748529
 
 The correlation coeff values are all pretty high, indicating overall agreement in the scoring system
 
