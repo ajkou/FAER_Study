@@ -1,15 +1,18 @@
 Study construction:
-    Response variable: Total Score, Ergo Score, Proc Score, Global 5-point score
-    Independent variable: Rater[1,2], AssessmentTime[0,1,2]
-    Within-subject variable: Rater[1,2], AssessmentTime[0,1,2]
-    Between-subject variable:
-    Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
 
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/7%20Scores%20bar.png)
+    Response variable: Total Score, Ergo Score, Proc Score, Global 5-point score
+
+    Independent variable: Rater[1,2], AssessmentTime[0,1,2]
+
+    Within-subject variable: Rater[1,2], AssessmentTime[0,1,2]
+
+    Between-subject variable: Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
+
 A few basic aspects of the data
 
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/3%20Total%20box2input.png)
+
 Total Score Description
     Grand mean
     16.14062
@@ -23,6 +26,7 @@ Total Score Description
     12.78 14.30 21.34
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/4%20TotProc%20box2input.png)
+
 Proc score Description
     Grand mean
     10.375
@@ -36,6 +40,7 @@ Proc score Description
      8.11  9.61 13.41
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/5%20TotErgo%20box2input.png)
+
 Ergo score Description
     Grand mean
     5.765625
@@ -49,6 +54,7 @@ Ergo score Description
     4.67 4.69 7.94
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/6%20Global%20box2input.png)
+
 Global score Description
     Grand mean
     2.109375
@@ -61,7 +67,9 @@ Global score Description
         0     1     2
     1.625 1.875 2.828
 
-
+Distribution of the 4 types of scores, the depedent variables in question.
+ 
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/7%20Scores%20hist.png)
 
 
 Comparing the raters by t-test?
@@ -94,13 +102,13 @@ Both Rater and AssessmentTime have a case for showing a difference in means, esp
 No interaction effect between Rater and AssessmentTime relating to these 4 scoring schemes.
 
 ANOVA Total Score
-    > summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+> summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
     
-Error:     Subj
+	Error:     Subj
               Df Sum Sq Mean Sq F value Pr(>F)
-    Residuals 30   1725   57.49
+    	Residuals 30   1725   57.49
     
-Error:     Within
+	Error:     Within
                           Df Sum Sq Mean Sq F value Pr(>F)
     Rater                  1   31.1    31.1   3.058 0.0824 .
     AssessmentTime         2 2493.8  1246.9 122.798 <2e-16 ***
@@ -109,13 +117,13 @@ Error:     Within
 
 
 ANOVA Proc Score
-    > summary(aov(TotProc ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+> summary(aov(TotProc ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
     
-Error:     Subj
+	Error:     Subj
               Df Sum Sq Mean Sq F value Pr(>F)
     Residuals 30   1052   35.07
     
-Error:     Within
+	Error:     Within
                           Df Sum Sq Mean Sq F value Pr(>F)
     Rater                  1    1.7     1.7   0.309  0.579
     AssessmentTime         2  880.0   440.0  78.147 <2e-16 ***
@@ -124,13 +132,13 @@ Error:     Within
 
 
 ANOVA Ergo Score
-    > summary(aov(TotErgo ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+> summary(aov(TotErgo ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
     
-Error:     Subj
+	Error:     Subj
               Df Sum Sq Mean Sq F value Pr(>F)
     Residuals 30    250   8.332
     
-Error:     Within
+	Error:     Within
                           Df Sum Sq Mean Sq F value Pr(>F)
     Rater                  1   18.1   18.09   6.458 0.0121 *
     AssessmentTime         2  430.1  215.07  76.791 <2e-16 ***
@@ -139,13 +147,13 @@ Error:     Within
 
 
 ANOVA Global Score [1,5]
-    > summary(aov(Global ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
+> summary(aov(Global ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
     
-Error:     Subj
+	Error:     Subj
               Df Sum Sq Mean Sq F value Pr(>F)
     Residuals 30  58.47   1.949
     
-Error:     Within
+	Error:     Within
                           Df Sum Sq Mean Sq F value Pr(>F)
     Rater                  1   0.91   0.909   2.229 0.1375
     AssessmentTime         2  50.33  25.167  61.744 <2e-16 ***
@@ -154,12 +162,12 @@ Error:     Within
            
 
 
-
-
 Tukey-Kramer Multiple-Comparison Test (Tukey's Range Test or Tukey-Kramer Multiple-Comparison Test)
 Does a pairwise comparison between the 3 time points. Results are equivalent to Ed's Scoring Summary.
+
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%204Scores%20bar.png)
-HSD Total Score
+
+HSD Total Score;
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -172,7 +180,7 @@ HSD Total Score
     2-1 7.046875  5.2802389  8.813511 0.0000000
 
 
-HSD Proc Score
+HSD Proc Score;
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -185,7 +193,7 @@ HSD Proc Score
     2-1 3.796875 2.4335265 5.160223 0.0000000
 
 
-HSD Ergo Score
+HSD Ergo Score;
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -198,7 +206,7 @@ HSD Ergo Score
     2-1 3.250000  2.4563679 4.0436321 0.000000
 
 
-HSD Global 5 Point Score
+HSD Global Score;
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -246,19 +254,19 @@ Comparing Rater1 and Rater2.
 The simplest calculation for comparing Rater1/Rater2 would just be correlation coeff. Shown for Total, Proc, Ergo, and Global
 
 Total score
-    >cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
+>cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
     [1] 0.8725729
 
 Proc Score
-    > cor(subset(data[,5], data$Rater==1), subset(data[,5], data$Rater==2))
+> cor(subset(data[,5], data$Rater==1), subset(data[,5], data$Rater==2))
     [1] 0.7975124
 
 Ergo Score
-    > cor(subset(data[,6], data$Rater==1), subset(data[,6], data$Rater==2))
+> cor(subset(data[,6], data$Rater==1), subset(data[,6], data$Rater==2))
     [1] 0.827612
 
 Global Score
-    > cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2))
+> cor(subset(data[,7], data$Rater==1), subset(data[,7], data$Rater==2))
     [1] 0.6748529
 
 The correlation coeff values are all pretty high, indicating overall agreement in the scoring system
@@ -267,7 +275,7 @@ The correlation coeff values are all pretty high, indicating overall agreement i
 These Pearson correlation values can be tested for whether they are non zero.
 Shown below is the correlation test for total Scores between raters
 
-    > cor.test(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
+> cor.test(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
     
     Pearson 's product-moment correlation
     
@@ -336,7 +344,7 @@ Kappa on this scale is weighted by the difference in stated score. (If Rater1 ma
 
 Kappa measure of the Global Score Ranged (1-5)
 
-    >kappa2(data.kappa, c(0,1,2,3,4))
+>kappa2(data.kappa, c(0,1,2,3,4))
      
     Cohen 's Kappa for 2 Raters (Weights: 0,1,2,3,4)
     
@@ -349,7 +357,7 @@ Kappa measure of the Global Score Ranged (1-5)
 
 Kappa measure of the Total Score Ranged (6-30)
 
-    > kappa2(data.kappa, 0:(range(data.kappa)[2]-range(data.kappa)[1]))
+> kappa2(data.kappa, 0:(range(data.kappa)[2]-range(data.kappa)[1]))
      Cohen 's Kappa for 2 Raters (Weights: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
     
      subjects = 96
