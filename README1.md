@@ -1,11 +1,11 @@
 Study construction:
-	Response variable: Total Score, Ergo Score, Proc Score, Global 5-point score
-	Independent variable: Rater[1,2], AssessmentTime[0,1,2]
-	Within-subject variable: Rater[1,2], AssessmentTime[0,1,2]
-	Between-subject variable:
-	Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
+    Response variable: Total Score, Ergo Score, Proc Score, Global 5-point score
+    Independent variable: Rater[1,2], AssessmentTime[0,1,2]
+    Within-subject variable: Rater[1,2], AssessmentTime[0,1,2]
+    Between-subject variable:
+    Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
 
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%20Scores%20bar.png)
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/7%20Scores%20bar.png)
 A few basic aspects of the data
 
 
@@ -64,8 +64,6 @@ Global score Description
 
 
 
-
-
 Comparing the raters by t-test?
 > t.test(data$Total[data$Rater==1], data$Total[data$Rater==2], paired=TRUE)
 
@@ -92,8 +90,6 @@ Comparing the 3 AssessmentTimes by t-test?
 
 
 
-
-
 Subject Repeated Measures ANOVA removes variablility created by individual effects from the F-test calculation. The highly disparate subject scores removes a huge chunk of variability
 Both Rater and AssessmentTime have a case for showing a difference in means, especially in TotErgo score. 
 No interaction effect between Rater and AssessmentTime relating to these 4 scoring schemes.
@@ -111,8 +107,6 @@ Rater                  1   31.1    31.1   3.058 0.0824 .
 AssessmentTime         2 2493.8  1246.9 122.798 <2e-16 ***
 Rater:AssessmentTime   2   27.1    13.6   1.335 0.2663    
 Residuals            150 1523.1    10.2                   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
 
 ANOVA Proc Score
@@ -128,8 +122,6 @@ Rater                  1    1.7     1.7   0.309  0.579
 AssessmentTime         2  880.0   440.0  78.147 <2e-16 ***
 Rater:AssessmentTime   2   10.1     5.0   0.897  0.410    
 Residuals            150  844.5     5.6                   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
 
 ANOVA Ergo Score
@@ -145,8 +137,6 @@ Rater                  1   18.1   18.09   6.458 0.0121 *
 AssessmentTime         2  430.1  215.07  76.791 <2e-16 ***
 Rater:AssessmentTime   2    4.3    2.17   0.774 0.4632    
 Residuals            150  420.1    2.80                   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
 
 ANOVA Global Score [1,5]
@@ -162,20 +152,14 @@ Rater                  1   0.91   0.909   2.229 0.1375
 AssessmentTime         2  50.33  25.167  61.744 <2e-16 ***
 Rater:AssessmentTime   2   2.78   1.392   3.416 0.0354 *  
 Residuals            150  61.14   0.408                   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
-
-
-
 
 
 
 
 Tukey-Kramer Multiple-Comparison Test (Tukey's Range Test or Tukey-Kramer Multiple-Comparison Test)
 Does a pairwise comparison between the 3 time points. Results are equivalent to Ed's Scoring Summary.
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%20Scores%20bar.png)
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%204Scores%20bar.png)
 HSD Total Score
-
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -189,7 +173,6 @@ HSD Total Score
 
 
 HSD Proc Score
-
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -203,7 +186,6 @@ HSD Proc Score
 
 
 HSD Ergo Score
-
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
@@ -217,7 +199,6 @@ HSD Ergo Score
 
 
 HSD Global 5 Point Score
-
       Tukey multiple comparisons of means
         95% family-wise confidence level
     
