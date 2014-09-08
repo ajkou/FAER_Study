@@ -1,4 +1,4 @@
-setwd("C:\\Users\\KOU\\Desktop")
+setwd("C:\\Users\\KOU\\Documents\\GitHub\\FAER_Study")
 data <- read.table("video_stats.txt", header=T)
 Rater1 <- subset(data, data$Rater==1)
 Rater2 <- subset(data, data$Rater==2)
@@ -155,14 +155,16 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	timep.3 <- subset(survey_data, survey_data$QTR==3)
 	timep.4 <- subset(survey_data, survey_data$QTR==4)
 	
-	#Graphic of single factor over time
+#Graphic of single factor over time
 	par(mfrow = c( 1, 6 ))
 	n= 3
-	boxplot(as.numeric(as.character(survey_data[,n]))~survey_data[,2])
-	apply(cbind(timep.0[,n],timep.1[,n],timep.2[,n],timep.3[,n],timep.4[,n]),2,hist)
+	boxplot(as.numeric(as.character(survey_data[,n]))~survey_data[,2], main="Tot SI")
+	tseries <- cbind(timep.0[,n],timep.1[,n],timep.2[,n],timep.3[,n],timep.4[,n])
+	colnames(tseries) <- 0:4
+	for (i in 1:5) {hist(tseries[,i], main= paste("time", i))}
 
 
-	#Graphics of factors by boxplot
+#Graphics of factors by boxplot
 	jpeg("test.jpg", width = 1000, height = 3500)
 	layout(matrix(1:80, 16, 5, byrow = TRUE))
 	for (i in c(3:58, 60:77)){
@@ -185,26 +187,26 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	for( i in c(1:18,20:32)){
 		lines(survey_data[,2][survey_data[,1]==i], Total.continuous [survey_data[,1]==i])
 	}
-	#Graphics of factors by boxplot TOT_S and TOT_C
+#Graphics of factors by boxplot TOT_S and TOT_C
 	boxplot(Total.singleInjection~survey_data[,2], main="Tot_S")
 	apply(cbind(Total.singleInjection[survey_data[,2]==0],Total.singleInjection[survey_data[,2]==1],Total.singleInjection[survey_data[,2]==2],Total.singleInjection[survey_data[,2]==3],Total.singleInjection[survey_data[,2]==4]),2,hist)
-	boxplot(Total.continuous ~survey_data[,2], main="Tot_S")
+	boxplot(Total.continuous ~survey_data[,2], main="Tot_C")
 	apply(cbind(Total.continuous [survey_data[,2]==0],Total.continuous[survey_data[,2]==1],Total.continuous[survey_data[,2]==2],Total.continuous[survey_data[,2]==3],Total.continuous[survey_data[,2]==4]),2,hist)
 
-	#Obstacle Ratings
+#Obstacle Ratings
 	Obstacles.frame <- replace(survey_data[,50:58],survey_data[,50:58]==0, NA)
 	boxplot(Obstacles.frame , main="Obstacles", yaxt="n", xaxt="n", xlim=c(0.5,10),horizontal=T, ylim=c(-4,5))
 	text(rep(-4,9), 1:9,labels=names(survey_data)[50:58], pos=4, cex=0.75)
 	text((1:5)-0.2, rep(10,5),labels=1:5, pos=4, cex=1.1)
 	
-	#Effective Teaching Methods
+#Effective Teaching Methods
 	Teaching.frame <- replace(survey_data[,60:68],apply(survey_data[,60:68],2,substr,1,1)=="0", NA)
 	Teaching.frame$EffectiveTeachingMethods.Cadaverlab <- as.numeric(as.character(Teaching.frame[,9]))
 	boxplot(Teaching.frame, main="Teaching", yaxt="n", xaxt="n", xlim=c(0.5,10),horizontal=T, ylim=c(-4,5))
 	text(rep(-4,9), 1:9,labels=names(survey_data)[60:68], pos=4, cex=0.75)
 	text((1:5)-0.2, rep(10,56),labels=1:5, pos=4, cex=1.1)
 
-	#Use of Learning Methods
+#Use of Learning Methods
 	Learning.frame <- survey_data[,69:77]
 	Learning.frame <- replace(Learning.frame, Learning.frame==4, 1) 
 	Learning.frame.plot <- apply(Learning.frame,2,table)
@@ -213,7 +215,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	text(rep(-125,9), (1:9*1.2)-0.5,labels=colnames(Learning.frame.plot), pos=4, cex=0.75)
 	text(seq(0,150,50)-7, rep(-1,4), labels=seq(0,150,50), pos=4, cex=1.1)
 
-	#Events
+#Events
 	Event.frame <- survey_data[,47:49]
 	Event.frame <- replace(Event.frame, Event.frame=="Less than 5", 4)
 	Event.frame <- apply(apply(Event.frame,2,as.character),2, as.numeric) 
@@ -225,14 +227,14 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	boxplot(Event.frame.puncture , main=names(survey_data[48]), cex.main=0.85)
 	boxplot(Event.frame.arrest , main=names(survey_data[49]), cex.main=0.85)
 
-	##rmANOVA
+#rmANOVA
 	#AOV Subject in error term
 	summary(aov(Total.singleInjection~ QTR+Error(SUBJ), data = survey_data))
 	#AOV Subject with Rater as a between-subjects variable; residual calc is different from NCSS	
 	summary(aov(Total.continuous ~ QTR+Error(SUBJ), data = survey_data))
 
 
-	#TukeyHSD
+#TukeyHSD
 	QTR = factor(survey_data$QTR)
 	TukeyHSD(aov(Total.singleInjection~ QTR), 'QTR', conf.level=0.95)
 	TukeyHSD(aov(Total.continuous~ QTR), 'QTR', conf.level=0.95)
@@ -320,7 +322,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 
 		scatterplotMatrix(~Total.singleInjection.Ag+Total.continuous.Ag |this.teaching )
 
-	#nxn correlation plots ; stronger filter
+#nxn correlation plots ; stronger filter
 	correlation.pickpops <- apply(apply(apply(survey_data,2,as.character),2,as.numeric), 2, median)
 	correlation.pickpops <- correlation.pickpops[correlation.pickpops!=0]
 	correlation.pickpops <- correlation.pickpops[!is.na(correlation.pickpops)]
@@ -339,7 +341,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	sink()
 
 
-	#heatmap1
+#heatmap1
 	singleInjection <- apply(apply(survey_data[,grep("N.S.", names(survey_data))], 2, as.character), 2, as.numeric)
 	continuous <- apply(apply(survey_data[,grep("N.C.", names(survey_data))], 2, as.character), 2, as.numeric)
 	singleInjection.sscore <- (
@@ -360,7 +362,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	rownames(x) <- as.character(c(1:18,20:32))
 	heatmap(x, Rowv = NA, Colv = NA,col = cm.colors(256), scale = "row", main="All Blocks (subset total)")
 	
-	#heatmap2
+#heatmap2
 	timep.0.SI <- cbind(Total.singleInjection[survey_data$QTR==0])
 	timep.0.C <- cbind(Total.continuous[survey_data$QTR==0])
 	timep.1.SI <- cbind(Total.singleInjection[survey_data$QTR==1])
@@ -371,7 +373,8 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	timep.3.C <- cbind(Total.continuous[survey_data$QTR==3])
 	timep.4.SI <- cbind(Total.singleInjection[survey_data$QTR==4])
 	timep.4.C <- cbind(Total.continuous[survey_data$QTR==4])		
-	#Single Injection heatmap
+	
+#Single Injection heatmap
 	x <- cbind(timep.0.SI, timep.1.SI, timep.2.SI, timep.3.SI, timep.4.SI) 
 	rownames(x) <- as.character(c(1:18,20:32))
 	colnames(x) <- c("Time0", "Time1", "Time2", "Time3", "Time4")
@@ -386,4 +389,37 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	rownames(x) <- as.character(c(1:18,20:32))
 	colnames(x) <- c("Time0", "Time1", "Time2", "Time3", "Time4", "Time0", "Time1", "Time2", "Time3", "Time4")
 	heatmap(x, Rowv = NA, Colv = NA,col = cm.colors(256), scale = "row", main="All blocks (count total)", xlab = "Single I                                 Continuous   ", margins=c(7,2))
- 
+
+#Preferences 
+	par(mfrow=c(1,2))
+	singleInjection.pref <- apply(apply(survey_data[,grep("PREF.", names(survey_data))], 2, as.character), 2, as.numeric)
+	continuous.pref <- apply(apply(survey_data[,grep("PREF.", names(survey_data))], 2, as.character), 2, as.numeric)
+	singleInjection.pref.Q <- cbind(
+	subset(singleInjection.pref , c(T,F,F,F,F)), 
+	subset(singleInjection.pref , c(F,T,F,F,F)), 
+	subset(singleInjection.pref , c(F,F,T,F,F)), 
+	subset(singleInjection.pref , c(F,F,F,T,F)), 
+	subset(singleInjection.pref , c(F,F,F,F,T)),
+	)
+	plot(rep(0:4,each=nrow(singleInjection.pref.Q)),singleInjection.pref.Q, main="PreferenceScore over time", xlim=c(0,5.5), xaxt="n", xlab="time")
+	for (i in 1:nrow(singleInjection.pref.Q)) { 
+  		lines(0:4, singleInjection.pref.Q[i,]) 
+	} 
+	text(rep(4.1,11)+c(rep(c(0,0.4), 5),0), singleInjection.pref.Q[,5], substring(rownames(singleInjection.pref.Q),6)[order(singleInjection.pref.Q[,5])], pos=4) 
+	axis(1, 0:4)
+#Comfort 
+	singleInjection.comf <- apply(apply(survey_data[,grep("COMF.", names(survey_data))], 2, as.character), 2, as.numeric)
+	continuous.comf <- apply(apply(survey_data[,grep("COMF.", names(survey_data))], 2, as.character), 2, as.numeric)
+	singleInjection.comf.Q <- cbind(
+	apply(subset(singleInjection.comf , c(T,F,F,F,F)), 2 , mean, na.rm=T) , 
+	apply(subset(singleInjection.comf , c(F,T,F,F,F)), 2 , mean, na.rm=T) , 
+	apply(subset(singleInjection.comf , c(F,F,T,F,F)), 2 , mean, na.rm=T) , 
+	apply(subset(singleInjection.comf , c(F,F,F,T,F)), 2 , mean, na.rm=T) ,
+	apply(subset(singleInjection.comf , c(F,F,F,F,T)), 2 , mean, na.rm=T)
+	)
+	plot(rep(0:4,each=nrow(singleInjection.comf.Q)),singleInjection.comf.Q, main="ComfortScore over time", xlim=c(0,5.5), xaxt="n", xlab="time")
+	for (i in 1:nrow(singleInjection.comf.Q)) { 
+  		lines(0:4, singleInjection.comf.Q[i,]) 
+	}
+	text(rep(4.2,11), singleInjection.comf.Q[,5], substring(rownames(singleInjection.comf.Q),6), pos=4)
+	axis(1, 0:4)
