@@ -209,12 +209,26 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 #Use of Learning Methods
 	Learning.frame <- survey_data[,69:77]
 	Learning.frame <- replace(Learning.frame, Learning.frame==4, 1) 
+	#Cumulative Bargraph
 	Learning.frame.plot <- apply(Learning.frame,2,table)
 	Learning.frame.plot <- rbind(Learning.frame.plot[1,order(Learning.frame.plot[2,])], sort(Learning.frame.plot[2,]))
 	barplot(Learning.frame.plot, main="Used Learning Methods", yaxt="n", xaxt="n", horiz=T, legend=c("Yes", "No"), xlim=c(-125,200), ylim=c(-1,10))
 	text(rep(-125,9), (1:9*1.2)-0.5,labels=colnames(Learning.frame.plot), pos=4, cex=0.75)
 	text(seq(0,150,50)-7, rep(-1,4), labels=seq(0,150,50), pos=4, cex=1.1)
-
+	#Timeplot Bargraph
+	Learning.frame.Q <- NULL
+	for (i in 1:ncol(Learning.frame)){Learning.frame.Q <- cbind (Learning.frame.Q , table(factor(subset(Learning.frame , c(T,F,F,F,F))[,i],0:1) ))}
+	Learning.frame.Q <- cbind(Learning.frame.Q, rep(0,2)) 
+	for (i in 1:ncol(Learning.frame)){Learning.frame.Q <- cbind (Learning.frame.Q , table(factor(subset(Learning.frame , c(F,T,F,F,F))[,i],0:1) ))}
+	Learning.frame.Q <- cbind(Learning.frame.Q , rep(0,2)) 
+	for (i in 1:ncol(Learning.frame)){Learning.frame.Q <- cbind (Learning.frame.Q , table(factor(subset(Learning.frame , c(F,F,T,F,F))[,i],0:1) ))}
+	Learning.frame.Q <- cbind(Learning.frame.Q , rep(0,2)) 
+	for (i in 1:ncol(Learning.frame)){Learning.frame.Q <- cbind (Learning.frame.Q , table(factor(subset(Learning.frame , c(F,F,F,T,F))[,i],0:1) ))}
+	Learning.frame.Q <- cbind(Learning.frame.Q , rep(0,2))
+	for (i in 1:ncol(Learning.frame)){Learning.frame.Q <- cbind (Learning.frame.Q , table(factor(subset(Learning.frame , c(F,F,F,F,T))[,i],0:1) ))}
+	Learning.frame.xlab <- paste(substring(colnames(Learning.frame),21), collapse="   ")
+	barplot(Learning.frame.Q ,legend = c("Used Method", "No"), main="Learning Preference", ylim=c(0,40), ylab="count",xlab=Learning.frame.xlab , args.legend = list(horiz=TRUE))
+	axis(1, seq(4,55, by=12), labels=c("Time0","Time1","Time2","Time3","Time4"), cex=0.5)
 #Events
 	Event.frame <- survey_data[,47:49]
 	Event.frame <- replace(Event.frame, Event.frame=="Less than 5", 4)
@@ -391,25 +405,27 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	heatmap(x, Rowv = NA, Colv = NA,col = cm.colors(256), scale = "row", main="All blocks (count total)", xlab = "Single I                                 Continuous   ", margins=c(7,2))
 
 #Preferences 
-	par(mfrow=c(1,2))
+	par(mfrow=c(1,1))
 	singleInjection.pref <- apply(apply(survey_data[,grep("PREF.", names(survey_data))], 2, as.character), 2, as.numeric)
 	continuous.pref <- apply(apply(survey_data[,grep("PREF.", names(survey_data))], 2, as.character), 2, as.numeric)
-	singleInjection.pref.Q <- cbind(
-	subset(singleInjection.pref , c(T,F,F,F,F)), 
-	subset(singleInjection.pref , c(F,T,F,F,F)), 
-	subset(singleInjection.pref , c(F,F,T,F,F)), 
-	subset(singleInjection.pref , c(F,F,F,T,F)), 
-	subset(singleInjection.pref , c(F,F,F,F,T)),
-	)
-	plot(rep(0:4,each=nrow(singleInjection.pref.Q)),singleInjection.pref.Q, main="PreferenceScore over time", xlim=c(0,5.5), xaxt="n", xlab="time")
-	for (i in 1:nrow(singleInjection.pref.Q)) { 
-  		lines(0:4, singleInjection.pref.Q[i,]) 
-	} 
-	text(rep(4.1,11)+c(rep(c(0,0.4), 5),0), singleInjection.pref.Q[,5], substring(rownames(singleInjection.pref.Q),6)[order(singleInjection.pref.Q[,5])], pos=4) 
-	axis(1, 0:4)
+	singleInjection.pref[singleInjection.pref==0] <- NA
+	singleInjection.pref.Q <- NULL
+	for (i in 1:ncol(singleInjection.pref)){singleInjection.pref.Q <- cbind (singleInjection.pref.Q , table(factor(subset(singleInjection.pref , c(T,F,F,F,F))[,i],1:3) ))}
+	singleInjection.pref.Q  <- cbind(singleInjection.pref.Q, rep(0,3)) 
+	for (i in 1:ncol(singleInjection.pref)){singleInjection.pref.Q <- cbind (singleInjection.pref.Q , table(factor(subset(singleInjection.pref , c(F,T,F,F,F))[,i],1:3) ))}
+	singleInjection.pref.Q  <- cbind(singleInjection.pref.Q, rep(0,3)) 
+	for (i in 1:ncol(singleInjection.pref)){singleInjection.pref.Q <- cbind (singleInjection.pref.Q , table(factor(subset(singleInjection.pref , c(F,F,T,F,F))[,i],1:3) ))}
+	singleInjection.pref.Q  <- cbind(singleInjection.pref.Q, rep(0,3)) 
+	for (i in 1:ncol(singleInjection.pref)){singleInjection.pref.Q <- cbind (singleInjection.pref.Q , table(factor(subset(singleInjection.pref , c(F,F,F,T,F))[,i],1:3) ))}
+	singleInjection.pref.Q  <- cbind(singleInjection.pref.Q, rep(0,3)) 
+	for (i in 1:ncol(singleInjection.pref)){singleInjection.pref.Q <- cbind (singleInjection.pref.Q , table(factor(subset(singleInjection.pref , c(F,F,F,F,T))[,i],1:3) ))}				
+	singleInjection.pref.xlab <- paste(substring(colnames(singleInjection.pref),6), collapse="   ")
+	barplot(singleInjection.pref.Q,legend = c("US", "Stim", "US-Stim"), main="Technique Preference", ylim=c(0,45), ylab="count",xlab=singleInjection.pref.xlab , args.legend = list(horiz=TRUE))
+	axis(1, seq(7,70, by=14), labels=c("Time0","Time1","Time2","Time3","Time4"))
 #Comfort 
 	singleInjection.comf <- apply(apply(survey_data[,grep("COMF.", names(survey_data))], 2, as.character), 2, as.numeric)
 	continuous.comf <- apply(apply(survey_data[,grep("COMF.", names(survey_data))], 2, as.character), 2, as.numeric)
+	singleInjection.comf[singleInjection.comf==0] <- NA	
 	singleInjection.comf.Q <- cbind(
 	apply(subset(singleInjection.comf , c(T,F,F,F,F)), 2 , mean, na.rm=T) , 
 	apply(subset(singleInjection.comf , c(F,T,F,F,F)), 2 , mean, na.rm=T) , 
