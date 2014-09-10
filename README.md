@@ -80,7 +80,9 @@ This shows in a stepwise algorithm the selection of relevant variables using AIC
 Lower AIC indicates a better fit while minimizing the level of complexity.
 
 >fit <- lm(Total.singleInjection.Ag~ singleInjection.T0 + var.age + var.exp + var.gender + var.teaching + cuScores )
+
 > step <- stepAIC(fit, direction="both")
+
 	Start:          AIC = 233.54
     Total.singleInjection.Ag ~ singleInjection.T0 + var.age + var.exp + Var.gender Var.teaching + cuScores
     
@@ -148,7 +150,7 @@ Lower AIC indicates a better fit while minimizing the level of complexity.
     3   - cuScores  1  12.02427752        26   36907.45 229.5476
     4    - var.age  1 515.28561452        27   37422.74 227.9774
 
-Sumary description of the final model shows that blocks done at Time0 (singleInjection.T0) to be highly related, years of experience (var.exp) to be related, and teaching affliation (var.teaching) to be weakly related.
+Summary description of the final model shows that blocks done at Time0 (singleInjection.T0) to be highly related, years of experience (var.exp) to be related, and teaching affliation (var.teaching) to be weakly related.
 With an R-squared/Adjusted R2 of 0.57 and 0.52, this model seems to me a reasonable approximation of related cofactors to single-injection practice adoption 0-12 months after seminar(Total.singleInjection.Ag).
 Factors related to continuous blocks remain unexplored due to sparcity of data.
 
@@ -181,9 +183,17 @@ Survey results of  stated Obstacles to implementation
 Survey results of  stated benefit of teaching method
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/16%20barplot%20teaching.png)
 
+Additional longitudinal barplot of Teaching Preference over 12months
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/22%20barplot%20learningpref.png)
+
 Survey results of incidence of method use
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17%20barplot%20learning.png)
 
+Survey statistics on learning preferences over time
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17.5%20barplot%20timelearning.png)
+
+Survey statistics on comfort scores over time for the various techniques
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/20%20lineplot%20comf.png)
 
 Repeated Subjects ANOVA (RMANOVA) on number of blocks performed:
 An F statistic > 0.05 would indicate no stage [Time0, Time1, Time2, Time3, Time4] was significantly different than another after separating individual effects.
@@ -251,18 +261,6 @@ A p statistic > 0.05 would indicate a pairwise comparison of quarters not to be 
 	4-2  0.12903226 -1.9442430 2.202308 0.9998026
 	4-3  0.45161290 -1.6216624 2.524888 0.9746699
 
-
-Survey statistics on learning preferences over time
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17.5%20barplot%20timelearning.png)
-
-Survey statistics on comfort scores over time for the various techniques
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/20%20lineplot%20comf.png)
-
-Additional longitudinal barplot of Technique Preference over 12months
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/21%20barplot%20techpref.png)
-
-Additional longitudinal barplot of Technique Preference over 12months
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/22%20barplot%20learningpref.png)
 
 Prior stats on video scores from June 2014 remain archived in this repo at:
 https://github.com/ajkou/FAER_Study/blob/master/README1.md
