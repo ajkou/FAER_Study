@@ -150,10 +150,7 @@ Lower AIC indicates a better fit while minimizing the level of complexity.
 
 Sumary description of the final model shows that blocks done at Time0 (singleInjection.T0) to be highly related, years of experience (var.exp) to be related, and teaching affliation (var.teaching) to be weakly related.
 With an R-squared/Adjusted R2 of 0.57 and 0.52, this model seems to me a reasonable approximation of related cofactors to single-injection practice adoption 0-12 months after seminar(Total.singleInjection.Ag).
-<<<<<<< HEAD
 Factors related to continuous blocks remain unexplored due to sparcity of data.
-=======
->>>>>>> origin/master
 
 > summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
 
