@@ -1,20 +1,15 @@
 Study construction:
 
     Response variable: Total Score, Ergo Score, Proc Score, Global 5-point score
-
     Independent variable: Rater[1,2], AssessmentTime[0,1,2]
-
     Within-subject variable: Rater[1,2], AssessmentTime[0,1,2]
-
     Between-subject variable: Fixed-effect variable: Rater[1,2], AssessmentTime[0,1,2]
 
-First thing to do is to illustrate a few basic aspects of the data.
-
+Preliminary illustration a few basic aspects of the video data.
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/3%20Total%20box2input.png)
 
 Total Score Description
-    
 	Grand mean
     16.14062
     
@@ -29,7 +24,6 @@ Total Score Description
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/4%20TotProc%20box2input.png)
 
 Proc score Description
-    
 	Grand mean
     10.375
     
@@ -44,7 +38,6 @@ Proc score Description
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/5%20TotErgo%20box2input.png)
 
 Ergo score Description
-    
 	Grand mean
     5.765625
     
@@ -59,7 +52,6 @@ Ergo score Description
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/6%20Global%20box2input.png)
 
 Global score Description
-    
 	Grand mean
     2.109375
     
@@ -71,12 +63,12 @@ Global score Description
         0     1     2
     1.625 1.875 2.828
 
-Distribution of the 4 types of scores, the depedent variables in question.
+Distribution of the 4 types of scores, the depedent variables in question. 
+Which performance scoring one should be used based on these distributions?
  
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/7%20Scores%20hist.png)
 
-
-Comparing the raters by t-test?
+Comparing the raters by paired t-test
 > t.test(data$Total[data$Rater==1], data$Total[data$Rater==2], paired=TRUE)
     Paired t - test
 
@@ -99,11 +91,10 @@ Comparing the 3 AssessmentTimes by t-test?
     P value adjustment method: bonferroni
 
 
-
-
-Subject Repeated Measures ANOVA removes variablility created by individual effects from the F-test calculation. The highly disparate subject scores removes a huge chunk of variability
+Subject Repeated Measures ANOVA removes variablility created by individual effects from the F-test calculation. 
+The highly disparate subject scores removes a huge chunk of variability.
 Both Rater and AssessmentTime have a case for showing a difference in means, especially in TotErgo score. 
-No interaction effect between Rater and AssessmentTime relating to these 4 scoring schemes.
+No interaction effect between Rater and AssessmentTime was found.
 
 ANOVA Total Score
 > summary(aov(Total ~ Rater*AssessmentTime+Error(Subj), data = data.rm ))
@@ -167,7 +158,8 @@ ANOVA Global Score [1,5]
 
 
 Tukey-Kramer Multiple-Comparison Test (Tukey's Range Test or Tukey-Kramer Multiple-Comparison Test)
-Does a pairwise comparison between the 3 time points. Results are equivalent to Ed's Scoring Summary.
+This procedure does a pairwise comparison between the 3 time points. 
+Results are equivalent to Ed's NCSS report.
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%204Scores%20bar.png)
 
@@ -226,7 +218,9 @@ HSD Global Score;
 
 
 
-Linear Model Full
+Linear Model Full. 
+Disposition of the judge (Rater) is unrelated and Time of Assessment (AssessmentTime1/AssessmentTime1) are found to have an effect on total score.
+By the third test in the afternoon, scores have generally increased by 8.56 points from the first assessment in the morning.
 AssessmentTime1 and AssessmentTime2 are lm constructs for the 3 levels of Time0/Time1/Time2
 
     Call:
@@ -250,12 +244,10 @@ AssessmentTime1 and AssessmentTime2 are lm constructs for the 3 levels of Time0/
     F-statistic: 50.39 on 3 and 188 DF,  p-value: < 2.2e-16
 
 
-
-
-
-
 Comparing Rater1 and Rater2.
-The simplest calculation for comparing Rater1/Rater2 would just be correlation coeff. Shown for Total, Proc, Ergo, and Global
+The simplest calculation for comparing Rater1/Rater2 would just be Pearson correlation coeff. 
+The correlation coeff values are all pretty high, indicating a general sense of overall agreement in the scoring system.
+Global score, although positively correlated, performs the worst out of the 4 scoring systems (corr=0.67).
 
 Total score
 >cor(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
@@ -277,11 +269,9 @@ Global Score
     
 	0.6748529
 
-The correlation coeff values are all pretty high, indicating overall agreement in the scoring system
-
 
 These Pearson correlation values can be tested for whether they are non zero.
-Shown below is the correlation test for total Scores between raters
+Shown below is the correlation test for total Scores between raters indicating a non-zero result.
 
 > cor.test(subset(data[,4], data$Rater==1), subset(data[,4], data$Rater==2))
     
@@ -294,7 +284,7 @@ Shown below is the correlation test for total Scores between raters
      0.8145903 0.9132893
 
 
-We can also look at the constituent parts of the total score
+We can also look at the constituent parts of the total score.
 Viewing rating correlation by category shows that some categories have high agreement (MachinePosition), while others have low agreement (NoCrossing). No categories show gross disagreement.
 
                Time          Passes   Visualization       EquipPrep          Target
@@ -307,14 +297,11 @@ Viewing rating correlation by category shows that some categories have high agre
           0.9701194       0.6792917       0.8282686       0.4464817      -0.0627703
 
 
-
-
-
-
-Intraclass Correlation from psychmetrics package (psych)
-Before, the Pearson correlation was shown evaluating variability between raters (inter-observer).
-ICC evaluates the variability (intra-observer) in the scoring of each video recording. This looks for similiarity of judgement.
-So our response variable is the score, whether by Rater1 or Rater2 (2 Judges), and each video sent to the raters is the grouping (96 groups).
+Intraclass Correlation from psychmetrics package (psych).
+Above, the Pearson correlation was shown evaluating variability between raters (inter-observer).
+ICC evaluates the variability (intra-observer) in the scoring of each video recording. 
+This looks for similiarity of judgement in individual cases rather than agreement by comparing the Rater's scorecards.
+So here, our response variable is the score, whether by Rater1 or Rater2 (2 Judges), and each video sent to the raters is the grouping (96 groups).
 
     Intraclass correlation coefficients
                              type  ICC  F df1 df2 p lower bound upper bound
@@ -342,13 +329,9 @@ Documentation on the R ICC function says,
 ICC3 for a fixed set of 2 judges seems to be the metric to use here. Shows an ICC of 0.87 between Jack and Eddie.
 
 
-
-
-
-
-Kappa (Cohen's kappa coefficient for 2 raters) measuring inter-observer
-Kappa scores were used to by (Gaba 1998) and (Devitt 1997) called the "kappa statistic of agreement"
-Kappa on this scale is weighted by the difference in stated score. (If Rater1 marks a score of 8 and Rater2 marks 11, the weight is 11-8=3)
+Kappa (Cohen's kappa coefficient for 2 raters) measuring inter-observer.
+Kappa scores were used to by (Gaba 1998) and (Devitt 1997) called the "kappa statistic of agreement".
+Kappa on this scale is weighted by the difference in stated score. (If Rater1 marks a score of 8 and Rater2 marks 11, the weight is 11-8=3).
 
 Kappa measure of the Global Score Ranged (1-5)
 

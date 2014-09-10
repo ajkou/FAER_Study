@@ -6,6 +6,10 @@ Rater2 <- subset(data, data$Rater==2)
 survey_data <- read.table("survey_stats.txt", header=T, sep="\t")
 demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 
+#remove dropped participant
+survey_data <- subset(survey_data, survey_data$SUBJ!=19) 
+data <- subset(data, substr(data$Subj, 1,2)!="19") 
+demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 
 ##Total Rater Scores (30 Points)
 	#Lineplot Mean over TimeAssessment
@@ -145,9 +149,7 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 ##Survey series of 3 month quarterly follows
 	Total.singleInjection <- apply(apply(apply(survey_data[,grep("N.S.", names(survey_data))], 2, as.character), 2, as.numeric),1, sum)
 	Total.continuous <- apply(apply(apply(survey_data[,grep("N.C.", names(survey_data))], 2, as.character), 2, as.numeric),1, sum)
-	#remove dropped participant
-	survey_data <- subset(survey_data, survey_data$SUBJ!=19) 
-	data <- subset(data, substr(data$Subj, 1,2)!="19") 
+
 	#Check for scarcity of data
 	timep.0 <- subset(survey_data, survey_data$QTR==0)
 	timep.1 <- subset(survey_data, survey_data$QTR==1)
@@ -254,33 +256,32 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 	TukeyHSD(aov(Total.continuous~ QTR), 'QTR', conf.level=0.95)
 
 
-	#Linear Model
-		Total.singleInjection.Ag <- (
+#Linear Model
+	Total.singleInjection.Ag <- (
 		subset(Total.singleInjection, c(F,T,F,F,F)) + 
 		subset(Total.singleInjection, c(F,F,T,F,F)) + 
 		subset(Total.singleInjection, c(F,F,F,T,F)) +
 		subset(Total.singleInjection, c(F,F,F,F,T))
-		)
-		singleInjection.T0 <- subset(Total.singleInjection, c(T,F,F,F,F))
+	)
+	singleInjection.T0 <- subset(Total.singleInjection, c(T,F,F,F,F))
 		Total.continuous.Ag <- (
 		subset(Total.continuous, c(F,T,F,F,F)) + 
 		subset(Total.continuous, c(F,F,T,F,F)) + 
 		subset(Total.continuous, c(F,F,F,T,F)) +
 		subset(Total.continuous, c(F,F,F,F,T))
-		)
-		Total.continuous.T0 <- subset(Total.continuous, c(T,F,F,F,F))
+	)
+	Total.continuous.T0 <- subset(Total.continuous, c(T,F,F,F,F))	
+	QTR = factor(survey_data$QTR)
 		
-		QTR = factor(survey_data$QTR)
-		
-		#Gender from demographic survey 0=Non Teaching, 1=Teaching
+	#Gender from demographic survey 0=Non Teaching, 1=Teaching
 		var.teaching <- (demo_data[,7])[c(TRUE,FALSE,FALSE)]
-		var.teaching <- var.teaching[c(1:18,20:32)]
+		#var.teaching <- var.teaching[c(1:18,20:32)]
 		var.teaching <- replace(as.character(var.teaching), var.teaching=="NT", "0")
 		var.teaching <- replace(as.character(var.teaching), var.teaching=="T", "1")
 		var.teaching <- as.numeric(var.teaching)
 		#var.teaching <- rep(var.teaching, each=5)
 		
-		#Skill test scores from Video scores
+	#Skill test scores from Video scores
 		cuScores <- rep(
 		#data[,4][c(T,F,F,F,F,F)] + 
 		#data[,4][c(F,T,F,F,F,F)] + 
@@ -290,50 +291,35 @@ demo_data <- read.table("demo_stats.txt", header=T, sep="\t")
 		data[,4][c(F,F,F,F,F,T)]
 		)
 		
-		#Gender from demographic survey 0=Male, 1=Female
+	#Gender from demographic survey 0=Male, 1=Female
 		var.gender <- (demo_data[,4])[c(TRUE,FALSE,FALSE)]
-		var.gender <- var.gender [c(1:18,20:32)]
+		#var.gender <- var.gender [c(1:18,20:32)]
 		var.gender <- replace(as.character(var.gender ), var.gender =="M", "0")
 		var.gender <- replace(as.character(var.gender ), var.gender =="F", "1")
 		var.gender <- as.numeric(var.gender)
 		#var.gender <- rep(var.gender, each=5)
 		
-		#Age and years of practice from demographic survey
+	#Age and years of practice from demographic survey
 		var.age <- (demo_data[,3])[c(TRUE,FALSE,FALSE)]
-		var.age <- var.age [c(1:18,20:32)]
+		#var.age <- var.age [c(1:18,20:32)]
 		var.age <- as.numeric(var.age )
 		var.exp <- (demo_data[,5])[c(TRUE,FALSE,FALSE)]
-		var.exp <- var.exp [c(1:18,20:32)]
+		#var.exp <- var.exp [c(1:18,20:32)]
 		var.exp <- as.numeric(var.exp)
 		#var.age <- rep(var.age , each=5)
 		#var.exp <- rep(var.exp , each=5)
 		
-
-		summary( lm(Total.singleInjection.Ag~ var.teaching))
-		summary( lm(Total.continuous.Ag~ var.teaching ))
-		summary( lm(Total.singleInjection.Ag~ singleInjection.T0))
-		summary( lm(Total.continuous.Ag~ continuous.T0))
-		summary( lm(Total.singleInjection.Ag~ cuScores ))
-		summary( lm(Total.continuous.Ag~ cuScores ))
-		summary( lm(Total.singleInjection.Ag~ var.gender ))
-		summary( lm(Total.continuous.Ag~ var.gender ))
-		summary( lm(Total.singleInjection.Ag~ var.age ))
-		summary( lm(Total.continuous.Ag~ var.age ))
-		summary( lm(Total.singleInjection.Ag~ var.exp ))
-		summary( lm(Total.continuous.Ag~ var.exp ))
-		summary( lm(Total.singleInjection.Ag~ var.age + var.gender+ var.teaching +cuScores ))
-		summary( lm(Total.continuous.Ag~ var.age + var.gender+ var.teaching +cuScores))
-		#Most Resonable Model so far
+	#Model Selection (bidirectional)
+		library(MASS)
+		fit <- lm(Total.singleInjection.Ag~ singleInjection.T0 + var.age + var.exp + var.gender + var.teaching + cuScores )
+		step <- stepAIC(fit, direction="both")
+		step$anova # display results
+	#Most Resonable Model so far
 		summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
-
-		#Dependent Variable Scatterplot Matrix
+	#Dependent Variable Scatterplot Matrix
 		library(car)
-		this.gender <- ((demo_data[,4])[c(TRUE,FALSE,FALSE)])[c(1:18,20:32)]
-		scatterplotMatrix(~var.exp+var.age |this.gender )
-
-		this.teaching <- ((demo_data[,7])[c(TRUE,FALSE,FALSE)])[c(1:18,20:32)]
-		scatterplotMatrix(~Total.singleInjection.Ag+cuScores+singleInjection.T0+var.exp|this.teaching )
-
+		scatterplotMatrix(~var.exp+var.age |var.gender )
+		scatterplotMatrix(~Total.singleInjection.Ag+cuScores+singleInjection.T0+var.exp|var.teaching)
 		scatterplotMatrix(~Total.singleInjection.Ag+Total.continuous.Ag |this.teaching )
 
 #nxn correlation plots ; stronger filter
