@@ -29,6 +29,7 @@ This basic difference in behavior challenges line fitting and mean comparisons.
 Modality of continuous versus single injection blocks also differ. Single Injection is way more popular. 
 Could new programs in continuous regional blocks be far more difficult to implement or is this normal occurrence for regional practice?
 Note that the intesity of the colors denotes relative values for the individual. Color intensity between rows are not comparable.
+
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/11%20all-blocks%20heatmap%20bytype.png)
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/8%20SI-blocks%20heatmap.png)
@@ -47,12 +48,12 @@ The curves also illustrate the distribution of rare events (Poisson distribution
 Over the entire term of the study period, the total number of continuous blocks departs from zero in only a few cases. 
 This makes the "Total number of continuous blocks performed" metric difficult to make inferences on. 
 Because of this problem and the fact that "number of continuous blocks performed" has far too many zero values, the rest of this README will focus on number of single-injection blocks reported.  
+
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/14%20scattermatrix%20SIvsC.png)
 
 This is the set of count totals of continuous blocks performed for Time0 to Time4
 > Total.continuous.Ag
  [1]  3 39  0  3  6  1  2  0  0  0  0  0  3  0  1 49  0 24  5  0  4  2 28  4  0  0  0  3  0  4  0
-
 
 Comparing the rate of single-injection blocks, video scores, number of single-injection experience stated at Time0, and years of experience.
 What trends do you see in this 4x4? 
@@ -63,21 +64,97 @@ Further, single-injection count stated at Time0 is related to count of blocks pe
 
 This can be quickly checked using a linear model (least squares regession):
 Data has been transformed in this model to remove longitudinal effects of Time0-Time4.
-R-square values also show that this model doesn't fit that great. Additional model tuning could increase fit.
-Count totals regressed on common sense factors like:
+Additional model tuning could increase fit.
+The following stat procedures illustrate single-injection practice count totals regressed on a pool of common sense factors like:
 
 	Number of blocks at Time0: Highly related variable.
 	Age of participant: Other closesly related variable [Years of Experience] found to be a better explanatory
 	Years of experience (var.exp): Related variable 
 	Gender: Not a strong factor.
 	Teaching-hospital/non-teaching (var.teaching): Weak factor
-	Aggregate of video scores during AssessmentTime2: Not a factor
+	Aggregate of video scores during AssessmentTime2 (cuScores): Not a factor
+
+
+Model selection process run bidirectionally using the MASS package. 
+This shows in a stepwise algorithm the selection of relevant variables using AIC (Akaike information criterion) as the judgement parameter.
+Lower AIC indicates a better fit while minimizing the level of complexity.
+
+>fit <- lm(Total.singleInjection.Ag~ singleInjection.T0 + var.age + var.exp + var.gender + var.teaching + cuScores )
+> step <- stepAIC(fit, direction="both")
+	Start:          AIC = 233.54
+    Total.singleInjection.Ag ~ singleInjection.T0 + var.age + var.exp + Var.gender Var.teaching + cuScores
+    
+                         Df Sum of Sq   RSS    AIC
+    - var.gender          1         0 36895 231.54
+    - cuScores            1        10 36905 231.55
+    - var.age             1       450 37345 231.91
+    <none>                            36895 233.54
+    - var.teaching        1      2972 39868 233.94
+    - var.exp             1      3207 40102 234.12
+    - singleInjection.T0  1     48161 85056 257.43
+    
+	Step:          AIC = 231.54
+    Total.singleInjection.Ag ~ singleInjection.T0 + var.age + var.exp + Var.teaching cuScores
+    
+                         Df Sum of Sq   RSS    AIC
+    - cuScores            1        12 36907 229.55
+    - var.age             1       521 37417 229.97
+    <none>                            36895 231.54
+    - var.teaching        1      2993 39888 231.96
+    - var.exp             1      3516 40412 232.36
+    + var.gender          1         0 36895 233.54
+    - singleInjection.T0  1     48776 85671 255.65
+    
+	Step:      AIC = 229.55
+    Total.singleInjection.Ag ~ singleInjection.T0 + var.age + var.exp + Var.teaching
+    
+                         Df Sum of Sq   RSS    AIC
+    - var.age             1       515 37423 227.98
+    <none>                            36907 229.55
+    - var.teaching        1      3105 40012 230.05
+    - var.exp             1      3659 40566 230.48
+    + cuScores            1        12 36895 231.54
+    + var.gender          1         2 36905 231.55
+    - singleInjection.T0  1     49498 86405 253.92
+    
+	Step:      AIC = 227.98
+    Total.singleInjection.Ag ~ singleInjection.T0 + var.exp + var.teaching
+    
+                         Df Sum of Sq   RSS    AIC
+    <none>                            37423 227.98
+    - var.teaching        1      2805 40228 228.22
+    + var.age             1       515 36907 229.55
+    + var.gender          1        52 37370 229.93
+    + cuScores            1         6 37417 229.97
+    - var.exp             1      7899 45322 231.91
+    - singleInjection.T0  1     49483 86906 252.10
+
+
+> step$anova
+    Stepwise Model Path
+    Analysis of Deviance Table
+    
+    Initial Model:
+    Total.singleInjection.Ag ~ singleInjection.T0 + var.age + var.exp +
+        Var.gender Var.teaching + cuScores
+    
+    Final Model:
+    Total.singleInjection.Ag ~ singleInjection.T0 + var.exp + var.teaching
+    
+    
+              Step Df     Deviance Resid. Df Resid. Dev      AIC
+    1                                     24   36895.41 233.5375
+    2 - var.gender  1   0.01715182        25   36895.43 231.5375
+    3   - cuScores  1  12.02427752        26   36907.45 229.5476
+    4    - var.age  1 515.28561452        27   37422.74 227.9774
+
+Sumary description of the final model shows that blocks done at Time0 (singleInjection.T0) to be highly related, years of experience (var.exp) to be related, and teaching affliation (var.teaching) to be weakly related.
+With an R-squared/Adjusted R2 of 0.57 and 0.52, this model seems to me a reasonable approximation of related cofactors to single-injection practice adoption 0-12 months after seminar(Total.singleInjection.Ag).
 
 > summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
 
 	Call:
-	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + 
-	    var.exp + var.teaching)
+	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + var.exp + var.teaching)
 	
 	Residuals:
 	    Min      1Q  Median      3Q     Max 
@@ -175,7 +252,16 @@ A p statistic > 0.05 would indicate a pairwise comparison of quarters not to be 
 
 
 Survey statistics on events
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/18%20boxplot%20events.png)
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17.5%20barplot%20timelearning.png)
+
+Survey statistics on events
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/20%20lineplot%20comf.png)
+
+Additional longitudinal barplot of Technique Preference over 12months
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/21%20barplot%20techpref.png)
+
+Additional longitudinal barplot of Technique Preference over 12months
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/22%20barplot%20learningpref.png)
 
 Prior stats on video scores from June 2014 remain archived in this repo at:
 https://github.com/ajkou/FAER_Study/blob/master/README1.md
