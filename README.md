@@ -252,10 +252,10 @@ A p statistic > 0.05 would indicate a pairwise comparison of quarters not to be 
 	4-3  0.45161290 -1.6216624 2.524888 0.9746699
 
 
-Survey statistics on events
+Survey statistics on learning preferences over time
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17.5%20barplot%20timelearning.png)
 
-Survey statistics on events
+Survey statistics on comfort scores over time for the various techniques
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/20%20lineplot%20comf.png)
 
 Additional longitudinal barplot of Technique Preference over 12months
