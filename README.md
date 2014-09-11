@@ -183,9 +183,6 @@ Survey results of  stated Obstacles to implementation
 Survey results of  stated benefit of teaching method
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/16%20barplot%20teaching.png)
 
-Additional longitudinal barplot of Teaching Preference over 12months
-![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/22%20barplot%20learningpref.png)
-
 Survey results of incidence of method use
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17%20barplot%20learning.png)
 
@@ -194,6 +191,9 @@ Survey statistics on learning preferences over time
 
 Survey statistics on comfort scores over time for the various techniques
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/20%20lineplot%20comf.png)
+
+Survey statistics on comfort scores over time for the various techniques
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/21%20barplot%20techpref.png)
 
 Repeated Subjects ANOVA (RMANOVA) on number of blocks performed:
 An F statistic > 0.05 would indicate no stage [Time0, Time1, Time2, Time3, Time4] was significantly different than another after separating individual effects.
