@@ -183,16 +183,16 @@ Survey results of  stated Obstacles to implementation
 Survey results of  stated benefit of teaching method
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/16%20barplot%20teaching.png)
 
-Survey results of incidence of method use
+Survey results of learning use
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17%20barplot%20learning.png)
 
-Survey statistics on learning preferences over time
+Survey statistics on learning use over time
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/17.5%20barplot%20timelearning.png)
 
 Survey statistics on comfort scores over time for the various techniques
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/20%20lineplot%20comf.png)
 
-Survey statistics on comfort scores over time for the various techniques
+Survey statistics on regional technique
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/21%20barplot%20techpref.png)
 
 Repeated Subjects ANOVA (RMANOVA) on number of blocks performed:
