@@ -264,7 +264,7 @@ demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 		subset(Total.singleInjection, c(F,F,F,F,T))
 	)
 	singleInjection.T0 <- subset(Total.singleInjection, c(T,F,F,F,F))
-		Total.continuous.Ag <- (
+	Total.continuous.Ag <- (
 		subset(Total.continuous, c(F,T,F,F,F)) + 
 		subset(Total.continuous, c(F,F,T,F,F)) + 
 		subset(Total.continuous, c(F,F,F,T,F)) +
@@ -425,3 +425,16 @@ demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 	}
 	text(rep(4.2,11), singleInjection.comf.Q[,5], substring(rownames(singleInjection.comf.Q),6), pos=4)
 	axis(1, 0:4)
+
+#McNemar Test of Continuous Blocks 09/11/2014 update
+	Total.continuous.Ag.x <- replace(Total.continuous.Ag,Total.continuous.Ag!=0, "T")
+	Total.continuous.Ag.x <- replace(Total.continuous.Ag.x,Total.continuous.Ag.x==0, "F")
+	Total.continuous.T0.x <- replace(Total.continuous.T0,Total.continuous.T0!=0, "T")
+	Total.continuous.T0.x <- replace(Total.continuous.T0.x,Total.continuous.T0.x==0, "F")
+	mcnemar.test(table(Total.continuous.T0.x, Total.continuous.Ag.x))
+
+	Total.singleInjection.Ag.x <- replace(Total.singleInjection.Ag,Total.singleInjection.Ag!=0, "T")
+	Total.singleInjection.Ag.x <- replace(Total.singleInjection.Ag.x,Total.singleInjection.Ag.x==0, "F")
+	singleInjection.T0.x <- replace(singleInjection.T0,singleInjection.T0!=0, "T")
+	singleInjection.T0.x <- replace(singleInjection.T0.x,singleInjection.T0.x==0, "F")
+	mcnemar.test(table(singleInjection.T0.x, Total.singleInjection.Ag.x))
