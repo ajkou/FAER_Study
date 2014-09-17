@@ -157,25 +157,70 @@ Factors related to continuous blocks remain unexplored due to sparcity of data.
 > summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
 
 	Call:
-	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + var.exp + var.teaching)
+	lm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + 
+	    var.exp + var.teaching)
+	
+	Residuals:
+	     Min       1Q   Median       3Q      Max 
+	-23.3489  -6.3582   0.2321   3.2335  17.6413 
+	
+	Coefficients:
+	                   Estimate Std. Error t value Pr(>|t|)    
+	(Intercept)        -10.4641     6.8508  -1.527   0.1383    
+	singleInjection.T0   0.8351     0.1398   5.975 2.26e-06 ***
+	var.exp              0.5824     0.2439   2.387   0.0242 *  
+	var.teaching         5.3004     3.7256   1.423   0.1663    
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+Residual standard error: 9.307 on 27 degrees of freedom
+Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
+F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
+
+Poisson regression variation of the model. The coefficient for Time0 SI blocks is exp(0.047) = 1.048, nearly a 1 to 1 relationship
+> summary( glm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching, family=poisson()))
+
+	Call:
+	glm(formula = Total.singleInjection.Ag ~ singleInjection.T0 + var.exp + var.teaching, family = poisson())
+	
+	Deviance Residuals: 
+	    Min       1Q   Median       3Q      Max  
+	-5.2091  -2.0440  -0.6373   1.3215   5.0048  
+	
+	Coefficients:
+	                   Estimate Std. Error z value Pr(>|z|)    
+	(Intercept)        0.700282   0.249472   2.807    0.005 ** 
+	singleInjection.T0 0.047007   0.003320  14.159  < 2e-16 ***
+	var.exp            0.045865   0.008348   5.494 3.93e-08 ***
+	var.teaching       0.465817   0.108898   4.278 1.89e-05 ***
+	---
+	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Final regression model of continuous blocks shows a more pronounced increase in practice (coeff=1.81).
+Recalling that the coeff for single injection was closer to 1, this is a different modality of implementation rate, at least for those actively practicing.
+Video scores was retained here, but with a coeff near zero and a high p value, is a non-factor.
+
+> summary(lm(Total.continuous.Ag~cuScores+Total.continuous.T0))
+
+	Call:
+	lm(formula = Total.continuous.Ag ~ cuScores + Total.continuous.T0)
 	
 	Residuals:
 	    Min      1Q  Median      3Q     Max 
-	-93.395 -25.433   0.928  12.934  70.565 
+	-3.5395 -0.8460 -0.4874 -0.1085  9.8971 
 	
 	Coefficients:
-                   Estimate Std. Error t value Pr(>|t|)    
-	(Intercept)        -41.8563    27.4032  -1.527   0.1383    
-	singleInjection.T0   3.3405     0.5591   5.975 2.26e-06 ***
-	var.exp              2.3295     0.9758   2.387   0.0242 *  
-	var.teaching        21.2014    14.9024   1.423   0.1663    
+ 	                   Estimate Std. Error t value Pr(>|t|)    
+	(Intercept)          1.66049    1.92642   0.862 0.396034    
+	cuScores            -0.02116    0.04423  -0.478 0.636149    
+	Total.continuous.T0  1.81361    0.42356   4.282 0.000197 ***
 	---
 	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
-	
-	Residual standard error: 37.23 on 27 degrees of freedom
-	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
-	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
 
+	Residual standard error: 2.431 on 28 degrees of freedom
+	Multiple R-squared: 0.3957,     Adjusted R-squared: 0.3525 
+	F-statistic: 9.167 on 2 and 28 DF,  p-value: 0.0008661
+ 
 
 Survey results of  stated Obstacles to implementation
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/15%20barplot%20obstacles.png)

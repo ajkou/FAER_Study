@@ -262,14 +262,14 @@ demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 		subset(Total.singleInjection, c(F,F,T,F,F)) + 
 		subset(Total.singleInjection, c(F,F,F,T,F)) +
 		subset(Total.singleInjection, c(F,F,F,F,T))
-	)
+	)/4
 	singleInjection.T0 <- subset(Total.singleInjection, c(T,F,F,F,F))
 	Total.continuous.Ag <- (
 		subset(Total.continuous, c(F,T,F,F,F)) + 
 		subset(Total.continuous, c(F,F,T,F,F)) + 
 		subset(Total.continuous, c(F,F,F,T,F)) +
 		subset(Total.continuous, c(F,F,F,F,T))
-	)
+	)/4
 	Total.continuous.T0 <- subset(Total.continuous, c(T,F,F,F,F))	
 	QTR = factor(survey_data$QTR)
 		
@@ -320,7 +320,7 @@ demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 		library(car)
 		scatterplotMatrix(~var.exp+var.age |var.gender )
 		scatterplotMatrix(~Total.singleInjection.Ag+cuScores+singleInjection.T0+var.exp|var.teaching)
-		scatterplotMatrix(~Total.singleInjection.Ag+Total.continuous.Ag |this.teaching )
+		scatterplotMatrix(~Total.singleInjection.Ag+Total.continuous.Ag |var.teaching )
 
 #nxn correlation plots ; stronger filter
 	correlation.pickpops <- apply(apply(apply(survey_data,2,as.character),2,as.numeric), 2, median)
