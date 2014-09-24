@@ -173,11 +173,13 @@ Factors related to continuous blocks remain unexplored due to sparcity of data.
 	---
 	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
-Residual standard error: 9.307 on 27 degrees of freedom
-Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
-F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
+	Residual standard error: 9.307 on 27 degrees of freedom
+	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
+	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
 
-Poisson regression variation of the model. The coefficient for Time0 SI blocks is exp(0.047) = 1.048, nearly a 1 to 1 relationship
+Poisson regression variation of the model. The coefficient for Time0 SI blocks is exp(0.047) = 1.048, nearly a 1 to 1 relationship.
+Notice that the poisson model has no direct equivalent to an R-squared goodness of fit metric.
+
 > summary( glm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching, family=poisson()))
 
 	Call:

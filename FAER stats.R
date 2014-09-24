@@ -316,6 +316,8 @@ demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 		step$anova # display results
 	#Most Resonable Model so far
 		summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
+		fit <- lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching)
+		confint(fit, level=0.95)	
 	#Dependent Variable Scatterplot Matrix
 		library(car)
 		scatterplotMatrix(~var.exp+var.age |var.gender )
