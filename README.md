@@ -177,8 +177,15 @@ Factors related to continuous blocks remain unexplored due to sparcity of data.
 	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
 	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
 
+The relationship between Total.singleInjection.Ag and var.exp warrants some explanation, as it holds a complex relationship with the number of blocks performed pre and post-training.
+A direct comparison between these 2 metrics reveals no direct relationship until you compare experience to the change in #PNB/month.
+Plots of Time0-Time4 are shown with respective plots of the first derivative shown below.
+I believe this is equivalent to saying that experience is related to df(PNB) = Post-training PNB - baseline PNB.
+
+![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/22%20tseries%20SIvsExp.png)
+
 Poisson regression variation of the model. The coefficient for Time0 SI blocks is exp(0.047) = 1.048, nearly a 1 to 1 relationship.
-Notice that the poisson model has no direct equivalent to an R-squared goodness of fit metric.
+Notice that the poisson model has no direct equivalent to an R-squared goodness of fit metric. Retrotransformation shown below.
 
 > summary( glm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching, family=poisson()))
 
@@ -197,6 +204,10 @@ Notice that the poisson model has no direct equivalent to an R-squared goodness 
 	var.teaching       0.465817   0.108898   4.278 1.89e-05 ***
 	---
 	Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+> sapply(fit$coefficients, exp)
+       (Intercept) singleInjection.T0            var.exp       var.teaching 
+          2.014322           1.048129           1.046933           1.593316
 
 Final regression model of continuous blocks shows a more pronounced increase in practice (coeff=1.81).
 Recalling that the coeff for single injection was closer to 1, this is a different modality of implementation rate, at least for those actively practicing.
