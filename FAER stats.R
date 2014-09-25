@@ -318,12 +318,43 @@ demo_data <- subset(demo_data , substr(demo_data$SUBJ, 1,2)!="19")
 		summary( lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching))
 		fit <- lm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching)
 		confint(fit, level=0.95)	
+	#Poisson regression SI blocks
+		fit <- glm(Total.singleInjection.Ag~ singleInjection.T0+var.exp+var.teaching, family=poisson())
+		summary(fit)
+		sapply(fit$coefficients, exp)
 	#Dependent Variable Scatterplot Matrix
 		library(car)
 		scatterplotMatrix(~var.exp+var.age |var.gender )
 		scatterplotMatrix(~Total.singleInjection.Ag+cuScores+singleInjection.T0+var.exp|var.teaching)
 		scatterplotMatrix(~Total.singleInjection.Ag+Total.continuous.Ag |var.teaching )
 
+	#travel plot
+		par(mfrow=c(2,5))
+		layout(matrix(c(seq(1,5),10, seq(6,9)), 2, 5, byrow = TRUE), heights=c(2,1.5))
+		rx <- list(
+		subset(Total.singleInjection, c(F,T,F,F,F)),
+		subset(Total.singleInjection, c(F,F,T,F,F)),
+		subset(Total.singleInjection, c(F,F,F,T,F)),
+		subset(Total.singleInjection, c(F,F,F,F,T)))
+		plot(var.exp, singleInjection.T0, col="red", ylim=c(0, 80), cex=1.5, main="Time0")
+		myFunction <- function(myPoints) {
+			#print(myPoints)
+			plot(var.exp+1, myPoints, col="blue", ylim=c(0, 80), main="Time+1", xlab="experience(years)", ylab="n SI PNB")
+			points(var.exp, singleInjection.T0, col="red", cex=1.5)
+			abline(lsfit(var.exp+1, myPoints))
+			for(i in 1:length(var.exp)) {
+				#lines(c(var.exp[i], var.exp[i]+1), c(singleInjection.T0[i],rx[i]))
+				arrows(var.exp[i], singleInjection.T0[i], var.exp[i]+1, myPoints[i], lwd=abs(singleInjection.T0[i]-myPoints[i])/10, length=0.1)
+			}
+		}
+		sapply(rx, myFunction)
+		myFunction <- function(myPoints) {
+			plot(var.exp, myPoints-singleInjection.T0, col="purple", ylim=c(-15, 52), main="Time+1", xlab="experience(years)", ylab="change in SI PNB from baseline")
+			abline(lsfit(var.exp, myPoints-singleInjection.T0))
+		}
+		sapply(rx, myFunction)
+
+summary(lm(subset(Total.singleInjection, c(F,T,F,F,F))-singleInjection.T0~var.exp))
 #nxn correlation plots ; stronger filter
 	correlation.pickpops <- apply(apply(apply(survey_data,2,as.character),2,as.numeric), 2, median)
 	correlation.pickpops <- correlation.pickpops[correlation.pickpops!=0]
