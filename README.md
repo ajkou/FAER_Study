@@ -177,10 +177,9 @@ Factors related to continuous blocks remain unexplored due to sparcity of data.
 	Multiple R-squared: 0.5731,     Adjusted R-squared: 0.5256 
 	F-statistic: 12.08 on 3 and 27 DF,  p-value: 3.38e-05 
 
-The relationship between Total.singleInjection.Ag and var.exp warrants some explanation, as it holds a complex relationship with the number of blocks performed pre and post-training.
-A direct comparison between these 2 metrics reveals no direct relationship until you compare experience to the change in #PNB/month.
-Plots of Time0-Time4 are shown with respective plots of the first derivative shown below.
-I believe this is equivalent to saying that experience is related to df(PNB) = Post-training PNB - baseline PNB.
+The relationship between Total.singleInjection.Ag and var.exp has a complex relationship with the number of blocks performed pre and post-training.
+Plots of Time0-Time4 are shown with respective plots of post-PNB minus pre-PNB, showing that the relationship is to the difference and not the total #PNB themselves.
+In this unusual example, less experience (<20 years) is actually associated with a reduction in practice, with higher quantiles of experience (>25 years) showing the most pronounced numerical increase. 
 
 ![alt tag](https://raw.githubusercontent.com/ajkou/FAER_Study/master/22%20tseries%20SIvsExp.png)
 
